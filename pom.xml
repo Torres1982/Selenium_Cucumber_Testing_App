@@ -14,13 +14,28 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
-	<!-- JUnit Support -->
 	<dependencies>
+	<!-- JUnit Support -->
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>3.8.1</version>
+			<version>4.12</version>
 			<scope>test</scope>
+		</dependency>
+		
+		<!-- Cucumber JVM Support -->
+		<dependency>
+		    <groupId>info.cukes</groupId>
+		    <artifactId>cucumber-java</artifactId>
+		    <version>1.2.5</version>
+		</dependency>
+		
+		<!-- Cucumber JUnit Support -->
+		<dependency>
+		    <groupId>info.cukes</groupId>
+		    <artifactId>cucumber-junit</artifactId>
+		    <version>1.2.5</version>
+		    <scope>test</scope>
 		</dependency>
 	</dependencies>
   
