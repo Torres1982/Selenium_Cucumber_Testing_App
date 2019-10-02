@@ -20,7 +20,6 @@ buildNumber.properties
 tmp/
 bin/
 .metadata
-README.md
 .idea/workspace.xml
 .idea/tasks.xml
 
