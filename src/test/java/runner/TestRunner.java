@@ -9,6 +9,8 @@ import cucumber.api.junit.Cucumber;
 @CucumberOptions(features = "src/test/java/features",
 				 glue = "stepdefinition",
 				 tags = "@SmokeTest, @WebTest, @MobileTest, @RegistrationTest",
+				 monochrome = true, // Neath Console Logging
+				 strict = true, // Displays X Red Box in failed Test Cases
 				 plugin = {"pretty", "html:target/cucumber", "json:target/cucumber.json", "junit:target/cucumber.html"})
 public class TestRunner {
 
