@@ -1,7 +1,13 @@
 Feature: Registration Testing Application
 
+Background:
+Given User is not registered
+When User click the Registration Button
+Then The Error Message is displayed
+And User is redirected to the login page
+
 # Usage of Data Table for multiple parameters
-@SmokeTest
+@RegistrationTest
 Scenario: Home Page Registration
 Given User is on the Home Page
 When User register with following details

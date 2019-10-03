@@ -51,4 +51,24 @@ public class StepDefinition {
     public void user_logs_in_with_following_username_and_password(String username, String password) throws Throwable {
     	System.out.println("Username: " + username + ", Password: " + password);
     }
+    
+    @When("^User is not registered$")
+    public void user_is_not_registered() throws Throwable {
+    	System.out.println("User is not registered in the system");
+    }
+    
+    @When("^User click the Registration Button$")
+    public void user_click_the_Registration_Button() throws Throwable {
+    	System.out.println("User clicked the Registration Button");
+    }
+
+    @Then("^The Error Message is displayed$")
+    public void the_Error_Message_is_displayed() throws Throwable {
+    	System.out.println("Registration Error Message is displayed");
+    }
+
+    @Then("^User is redirected to the login page$")
+    public void user_is_redirected_to_the_login_page() throws Throwable {
+    	System.out.println("User is redirected to the Login Page");
+    }
 }
