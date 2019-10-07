@@ -6,7 +6,6 @@ Given User is on the eBay main page
 When User search for "shoes" items
 Then "shoes" results are displayed on the page
 
-@SeleniumTest
 Scenario: Select the item and navigate to a Checkout page
 Given User is on the eBay main page
 When User search for "nike" items
