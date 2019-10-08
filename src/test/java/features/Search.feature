@@ -9,6 +9,6 @@ Then "Shoes" results are displayed on the page
 Scenario: Select the item and navigate to a Checkout page
 Given User is on the eBay main page
 When User search for "Nike" items
-Then "Nike" results are displayed on the page
+And "Nike" model results are displayed on the page
 And User proceeded to the Checkout page to buy the items
 Then verified selected "Nike" items are displayed on the Checkout page
