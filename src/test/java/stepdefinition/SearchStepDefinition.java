@@ -10,7 +10,7 @@ import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import cucumber.api.junit.Cucumber;
-import util.WebDriverUtility;
+import util.ChromeWebDriverUtility;
 
 @RunWith(Cucumber.class)
 public class SearchStepDefinition {
@@ -18,8 +18,7 @@ public class SearchStepDefinition {
 	
 	@Given("^User is on the eBay main page$")
 	public void user_is_on_ebay_main_page() throws Throwable {
-		webDriver = WebDriverUtility.getWebDriver();
-		webDriver.get("https://www.ebay.ie");
+		webDriver = ChromeWebDriverUtility.getWebDriver();
 	}
 	
 	@When("^User search for \"([^\"]*)\" items$")

@@ -7,7 +7,7 @@ import java.util.Properties;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 
-public class WebDriverUtility {
+public class ChromeWebDriverUtility {
 	public static WebDriver webDriver;
 	public static Properties properties;
 	
