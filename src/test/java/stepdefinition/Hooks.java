@@ -18,6 +18,6 @@ public class Hooks extends ChromeWebDriverUtility {
 	@After("@SeleniumTest")
 	public void webAfterActionSeleniumTest() {
 		webDriver.close();
-		System.out.println("***** Closing Web After Hook Selenium Test *****");
+		System.out.println("*************** Closing Web After Hook Selenium Test");
 	}
 }

@@ -6,16 +6,23 @@ import cucumber.api.java.en.Then;
 import cucumber.api.DataTable;
 import cucumber.api.java.en.And;
 import cucumber.api.junit.Cucumber;
+import util.ChromeWebDriverUtility;
 
 import java.util.List;
 
+import org.junit.Assert;
 import org.junit.runner.RunWith;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.Select;
 
 @RunWith(Cucumber.class)
-public class StepDefinition {
+public class LoginStepDefinition {
+	public WebDriver webDriver;
+	
     @Given("^User is on the Home Page$")
     public void user_is_on_the_home_page() throws Throwable {
-    	System.out.println("User has navigated to the Home Page");
+    	webDriver = ChromeWebDriverUtility.getWebDriver();
     }
     
     @When("^User logs in with a username \"([^\"]*)\" and passwrod \"([^\"]*)\"$")
@@ -37,14 +44,38 @@ public class StepDefinition {
     public void user_register_with_following_details(DataTable dataTable) throws Throwable {
     	List<List<String>> list = dataTable.raw();
     	
-    	System.out.println("User Registers with following details:");					
+    	// Navigate to Registration page
+    	webDriver.findElement(By.xpath("//div[@class='links']/ul/li[2]/a")).click();
     	
-    	for (int i = 0; i < list.size(); i++) {
-			System.out.println("\nName: " + list.get(i).get(0) +
-								"\nPassword: " + list.get(i).get(1) +
-								"\nEmail: " + list.get(i).get(2) +
-								"\nNationality: " + list.get(i).get(3));
-    	}
+    	// Confirm the Registration page is loaded
+    	Assert.assertTrue(webDriver.findElement(By.cssSelector("h1.heading-title")).getText().contains("Register"));
+    	
+    	// Fill in the Registration Form
+    	webDriver.findElement(By.cssSelector("#input-firstname")).sendKeys(list.get(0).get(0));
+    	webDriver.findElement(By.cssSelector("#input-lastname")).sendKeys(list.get(0).get(1));
+    	webDriver.findElement(By.cssSelector("#input-email")).sendKeys(list.get(0).get(2));
+    	webDriver.findElement(By.cssSelector("#input-telephone")).sendKeys(list.get(0).get(3));
+    	webDriver.findElement(By.cssSelector("#input-address-1")).sendKeys(list.get(0).get(4));
+    	webDriver.findElement(By.cssSelector("#input-custom-field3")).sendKeys(list.get(0).get(5));
+    	webDriver.findElement(By.cssSelector("#input-city")).sendKeys(list.get(0).get(6));
+    	webDriver.findElement(By.cssSelector("#input-password")).sendKeys(list.get(0).get(7));
+    	webDriver.findElement(By.cssSelector("#input-confirm")).sendKeys(list.get(0).get(8));
+    	
+    	// Select Country and County from the Drop-down Box
+    	Select selectCountry = new Select(webDriver.findElement(By.id("#input-country")));
+    	selectCountry.selectByVisibleText("Poland");
+    	
+    	Select selectState = new Select(webDriver.findElement(By.id("#input-zone")));
+    	selectState.selectByVisibleText("Pomorskie");
+    	
+//    	System.out.println("User Registers with following details:");					
+//    	
+//    	for (int i = 0; i < list.size(); i++) {
+//			System.out.println("\nName: " + list.get(i).get(0) +
+//								"\nPassword: " + list.get(i).get(1) +
+//								"\nEmail: " + list.get(i).get(2) +
+//								"\nNationality: " + list.get(i).get(3));
+//    	}
     }
     
     @When("^User logs in with a username (.+) and password (.+)$")
@@ -52,7 +83,7 @@ public class StepDefinition {
     	System.out.println("Username: " + username + ", Password: " + password);
     }
     
-    @When("^User is not registered$")
+    @Given("^User is not registered$")
     public void user_is_not_registered() throws Throwable {
     	System.out.println("User is not registered in the system");
     }

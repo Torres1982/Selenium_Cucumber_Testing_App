@@ -20,6 +20,7 @@ public class ChromeWebDriverUtility {
 		System.setProperty("webdriver.chrome.driver", "C:\\Users\\AR20068603\\chromedriver.exe");
 		webDriver = new ChromeDriver();
 		webDriver.get(properties.getProperty("url"));
+		System.out.println("*************** URL Verification: " + webDriver.getCurrentUrl());
 		
 		return webDriver;
 	}

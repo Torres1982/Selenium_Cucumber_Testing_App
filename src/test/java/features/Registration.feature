@@ -7,12 +7,12 @@ Then The Error Message is displayed
 And User is redirected to the login page
 
 # Usage of Data Table for multiple parameters
-@RegistrationTest
-Scenario: Home Page Registration
+@SeleniumTest
+Scenario: User Registration
 Given User is on the Home Page
 When User register with following details
-| jenny | jenny123 | jenny123@gmail.com | England |
-| andy | andy26 | andy@gmail.com | Scotland |
-| mark | mark88 | mark88@gmail.com | Wales |
+| Artur  | Torres | artur123@gmail.com | 0876451325 | Wojska Polskiego 8  | 0876451325 | Gdansk | pass1 | pass1  |
+#| andy  | green  | andy@gmail.com     | 0833271845 |
+#| mark  | slater | mark88@gmail.com   | 0856251727 |
+
 Then User accesses their profile page
-And User can access all personal details: "true"
