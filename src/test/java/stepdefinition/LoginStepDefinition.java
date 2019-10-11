@@ -14,7 +14,9 @@ import org.junit.Assert;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 @RunWith(Cucumber.class)
 public class LoginStepDefinition {
@@ -62,20 +64,24 @@ public class LoginStepDefinition {
     	webDriver.findElement(By.cssSelector("#input-confirm")).sendKeys(list.get(0).get(8));
     	
     	// Select Country and County from the Drop-down Box
-    	Select selectCountry = new Select(webDriver.findElement(By.id("#input-country")));
+    	Select selectCountry = new Select(webDriver.findElement(By.id("input-country")));
     	selectCountry.selectByVisibleText("Poland");
     	
-    	Select selectState = new Select(webDriver.findElement(By.id("#input-zone")));
+    	WebDriverWait wait = new WebDriverWait(webDriver, 2);
+    	wait.until(ExpectedConditions.elementToBeClickable(By.id("input-zone")));
+    	Thread.sleep(2000);
+    	Select selectState = new Select(webDriver.findElement(By.id("input-zone")));
     	selectState.selectByVisibleText("Pomorskie");
+    	//selectState.selectByIndex(10);
     	
-//    	System.out.println("User Registers with following details:");					
-//    	
-//    	for (int i = 0; i < list.size(); i++) {
-//			System.out.println("\nName: " + list.get(i).get(0) +
-//								"\nPassword: " + list.get(i).get(1) +
-//								"\nEmail: " + list.get(i).get(2) +
-//								"\nNationality: " + list.get(i).get(3));
-//    	}
+    	System.out.println("User Registers with following details:");					
+    	
+    	for (int i = 0; i < list.size(); i++) {
+			System.out.println("\nName: " + list.get(i).get(0) +
+								"\nPassword: " + list.get(i).get(1) +
+								"\nEmail: " + list.get(i).get(2) +
+								"\nNationality: " + list.get(i).get(3));
+    	}
     }
     
     @When("^User logs in with a username (.+) and password (.+)$")
