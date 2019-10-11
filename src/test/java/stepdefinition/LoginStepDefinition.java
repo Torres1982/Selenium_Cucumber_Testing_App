@@ -14,6 +14,7 @@ import org.junit.Assert;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -46,6 +47,20 @@ public class LoginStepDefinition {
     public void user_register_with_following_details(DataTable dataTable) throws Throwable {
     	List<List<String>> list = dataTable.raw();
     	
+    	System.out.println("User tries to Register with the following details:");					
+    	
+    	for (int i = 0; i < list.size(); i++) {
+			System.out.println("Name: " + list.get(i).get(0) +
+								"\nLast Name: " + list.get(i).get(1) +
+								"\nEmail: " + list.get(i).get(2) +
+								"\nTelephone: " + list.get(i).get(3) +
+								"\nAddress: " + list.get(i).get(4) +
+								"\nPhone 2: " + list.get(i).get(5) +
+								"\nCity: " + list.get(i).get(6) +
+								"\nPassword: " + list.get(i).get(7) +
+								"\nConfirmed: " + list.get(i).get(8));
+    	}
+    	
     	// Navigate to Registration page
     	webDriver.findElement(By.xpath("//div[@class='links']/ul/li[2]/a")).click();
     	
@@ -64,24 +79,31 @@ public class LoginStepDefinition {
     	webDriver.findElement(By.cssSelector("#input-confirm")).sendKeys(list.get(0).get(8));
     	
     	// Select Country and County from the Drop-down Box
+    	String country = "Poland";
     	Select selectCountry = new Select(webDriver.findElement(By.id("input-country")));
-    	selectCountry.selectByVisibleText("Poland");
+    	selectCountry.selectByVisibleText(country);
+    	Assert.assertEquals(selectCountry.getFirstSelectedOption().getText(), country);
     	
-    	WebDriverWait wait = new WebDriverWait(webDriver, 2);
-    	wait.until(ExpectedConditions.elementToBeClickable(By.id("input-zone")));
+    	//WebDriverWait wait = new WebDriverWait(webDriver, 2);
+    	//wait.until(ExpectedConditions.elementToBeClickable(By.id("input-zone")));
+    	//wait.until(ExpectedConditions.visibilityOf(webDriver.findElement(By.id("input-zone"))));
     	Thread.sleep(2000);
+    	
+    	String region = "Pomorskie";
     	Select selectState = new Select(webDriver.findElement(By.id("input-zone")));
-    	selectState.selectByVisibleText("Pomorskie");
-    	//selectState.selectByIndex(10);
+    	selectState.selectByVisibleText(region);
+    	Assert.assertEquals(selectState.getOptions().get(11).getText(), region);
+    	//selectState.selectByIndex(11);
     	
-    	System.out.println("User Registers with following details:");					
+    	// Handle the Check Box
+    	WebElement termsAgreeCheckBox = webDriver.findElement(By.name("agree"));
+    	Assert.assertFalse(termsAgreeCheckBox.isSelected());
+    	termsAgreeCheckBox.click();
+    	Assert.assertTrue(termsAgreeCheckBox.isSelected());
     	
-    	for (int i = 0; i < list.size(); i++) {
-			System.out.println("\nName: " + list.get(i).get(0) +
-								"\nPassword: " + list.get(i).get(1) +
-								"\nEmail: " + list.get(i).get(2) +
-								"\nNationality: " + list.get(i).get(3));
-    	}
+    	// Find the number of Check Boxes and Radio Buttons on the site
+    	System.out.println("Number of Radio Buttons: " + webDriver.findElements(By.cssSelector("input[type='radio']")).size());
+    	System.out.println("Number of Checkboxes: " + webDriver.findElements(By.cssSelector("input[type='checkbox']")).size());
     }
     
     @When("^User logs in with a username (.+) and password (.+)$")
