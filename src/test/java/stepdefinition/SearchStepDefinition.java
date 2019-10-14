@@ -42,9 +42,10 @@ public class SearchStepDefinition {
 	@And("^User proceeded to the Checkout page to buy the items$")
 	public void user_proceeded_to_the_checkout_page_to_buy_the_items() throws Throwable {
 		webDriver.findElements(By.xpath("//div[@class='image ']/a/img")).get(0).click();
+		Thread.sleep(2000);
 		webDriver.findElement(By.cssSelector("button#button-cart.button")).click();
 		
-		// TODO: Apply switching to a Modal Window
+		// TODO: Apply switching to a Modal Window based on JavaScript
 		webDriver.findElement(By.xpath("//div[@id='cart']/button")).click();
 		webDriver.findElement(By.xpath("//div[@class='mini-cart-total']/p/a[1]")).click();
 	}

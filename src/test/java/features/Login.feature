@@ -3,7 +3,7 @@ Feature: Login Testing Application
 @WebTest
 Scenario: Home Page Login
 Given User is on the Home Page
-When User logs in with a username "artur" and passwrod "12345"
+When User logs in with a username "artur123@gmail.com" and passwrod "pass1"
 Then User accesses their profile page
 And User can access all personal details: "true"
 
@@ -24,6 +24,6 @@ And User can access all personal details: "true"
 
 Examples:
 | username | password |
-| john | john1 |
-| anna | anna2 |
-| kate | kate3 |
+| artur123@gmail.com | pass1 |
+#| anna | anna2 |
+#| kate | kate3 |

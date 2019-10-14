@@ -78,6 +78,12 @@ public class LoginStepDefinition {
     		webDriver.findElement(By.cssSelector(inputFields.get(i))).sendKeys(list.get(0).get(i));
     	}
     	
+    	// Confirm that Passwords match
+    	String password = webDriver.findElement(By.cssSelector(inputFields.get(7))).getText();
+    	String confirm = webDriver.findElement(By.cssSelector(inputFields.get(8))).getText();
+    	
+    	Assert.assertTrue(password.equals(confirm));
+    	
     	// Select Country and County from the Drop-down Box
     	String country = "Poland";
     	Select selectCountry = new Select(webDriver.findElement(By.id("input-country")));
