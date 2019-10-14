@@ -94,22 +94,32 @@ public class LoginStepDefinition {
     	selectState.selectByVisibleText(region);
     	Assert.assertEquals(selectState.getOptions().get(11).getText(), region);
     	//selectState.selectByIndex(11);
+    	    	
+    	// Handle Radio Buttons
+    	List<WebElement> radioButons = webDriver.findElements(By.xpath("//input[@type='radio' and @name='newsletter']"));
+    	
+    	// check if Radio Buttons exists on the page
+    	if (radioButons.size() == 2) {
+    		int counter = 1;
+    		
+    		for (int i = 0; i < radioButons.size(); i++) {
+    			Assert.assertTrue(radioButons.get(i).isDisplayed());
+    			
+    			// Verify that both Radio Buttons are not selected
+    			if (radioButons.get(i).isSelected()) {
+        			Assert.assertFalse(radioButons.get(counter).isSelected());
+        			radioButons.get(counter).click();
+        			Assert.assertTrue(radioButons.get(counter).isSelected());
+    			}
+    			counter--;
+    		}
+    	}
     	
     	// Handle the Check Box
     	WebElement termsAgreeCheckBox = webDriver.findElement(By.name("agree"));
     	Assert.assertFalse(termsAgreeCheckBox.isSelected());
     	termsAgreeCheckBox.click();
     	Assert.assertTrue(termsAgreeCheckBox.isSelected());
-    	
-    	// Handle Radio Buttons
-    	List<WebElement> radioButons = webDriver.findElements(By.xpath("//input[@type='radio' and @name='newsletter']"));
-    	
-    	// check if Radio Buttons exists on the page
-    	if (radioButons.size() == 2) {
-    		for (int i = 0; i < radioButons.size(); i++) {
-    			Assert.assertTrue(radioButons.get(i).isDisplayed());
-    		}
-    	}
     	
     	// Find the number of Check Boxes and Radio Buttons on the site
     	System.out.println("Number of Radio Buttons: " + radioButons.size());
