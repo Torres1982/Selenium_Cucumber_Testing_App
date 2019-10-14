@@ -8,6 +8,9 @@ import cucumber.api.java.en.And;
 import cucumber.api.junit.Cucumber;
 import util.ChromeWebDriverUtility;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Assert;
@@ -68,15 +71,12 @@ public class LoginStepDefinition {
     	Assert.assertTrue(webDriver.findElement(By.cssSelector("h1.heading-title")).getText().contains("Register"));
     	
     	// Fill in the Registration Form
-    	webDriver.findElement(By.cssSelector("#input-firstname")).sendKeys(list.get(0).get(0));
-    	webDriver.findElement(By.cssSelector("#input-lastname")).sendKeys(list.get(0).get(1));
-    	webDriver.findElement(By.cssSelector("#input-email")).sendKeys(list.get(0).get(2));
-    	webDriver.findElement(By.cssSelector("#input-telephone")).sendKeys(list.get(0).get(3));
-    	webDriver.findElement(By.cssSelector("#input-address-1")).sendKeys(list.get(0).get(4));
-    	webDriver.findElement(By.cssSelector("#input-custom-field3")).sendKeys(list.get(0).get(5));
-    	webDriver.findElement(By.cssSelector("#input-city")).sendKeys(list.get(0).get(6));
-    	webDriver.findElement(By.cssSelector("#input-password")).sendKeys(list.get(0).get(7));
-    	webDriver.findElement(By.cssSelector("#input-confirm")).sendKeys(list.get(0).get(8));
+    	List<String> inputFields = Arrays.asList("#input-firstname", "#input-lastname", "#input-email", "#input-telephone", "#input-address-1",
+    											 "#input-custom-field3", "#input-city", "#input-password", "#input-confirm");
+    	
+    	for (int i = 0; i < inputFields.size(); i++) {
+    		webDriver.findElement(By.cssSelector(inputFields.get(i))).sendKeys(list.get(0).get(i));
+    	}
     	
     	// Select Country and County from the Drop-down Box
     	String country = "Poland";
@@ -101,8 +101,18 @@ public class LoginStepDefinition {
     	termsAgreeCheckBox.click();
     	Assert.assertTrue(termsAgreeCheckBox.isSelected());
     	
+    	// Handle Radio Buttons
+    	List<WebElement> radioButons = webDriver.findElements(By.xpath("//input[@type='radio' and @name='newsletter']"));
+    	
+    	// check if Radio Buttons exists on the page
+    	if (radioButons.size() == 2) {
+    		for (int i = 0; i < radioButons.size(); i++) {
+    			Assert.assertTrue(radioButons.get(i).isDisplayed());
+    		}
+    	}
+    	
     	// Find the number of Check Boxes and Radio Buttons on the site
-    	System.out.println("Number of Radio Buttons: " + webDriver.findElements(By.cssSelector("input[type='radio']")).size());
+    	System.out.println("Number of Radio Buttons: " + radioButons.size());
     	System.out.println("Number of Checkboxes: " + webDriver.findElements(By.cssSelector("input[type='checkbox']")).size());
     }
     
