@@ -90,13 +90,13 @@ public class LoginStepDefinition {
     	selectCountry.selectByVisibleText(country);
     	Assert.assertEquals(selectCountry.getFirstSelectedOption().getText(), country);
     	
-    	//WebDriverWait wait = new WebDriverWait(webDriver, 2);
-    	//wait.until(ExpectedConditions.elementToBeClickable(By.id("input-zone")));
-    	//wait.until(ExpectedConditions.visibilityOf(webDriver.findElement(By.id("input-zone"))));
-    	Thread.sleep(2000);
+    	// EXPLICIT WAIT applied - targets only the specific Element (second Drop-Down List)
+    	// Wait before the Region dynamic Drop-Down List is loaded and populated with Strings
+    	WebDriverWait wait = new WebDriverWait(webDriver, 2);
+    	wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//select[@id='input-zone']/option[@value='2641']")));
     	
     	String region = "Pomorskie";
-    	Select selectState = new Select(webDriver.findElement(By.id("input-zone")));
+    	Select selectState = new Select(webDriver.findElement(By.id("input-zone")));    	
     	selectState.selectByVisibleText(region);
     	Assert.assertEquals(selectState.getOptions().get(11).getText(), region);
     	//selectState.selectByIndex(11);
