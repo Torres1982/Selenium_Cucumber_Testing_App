@@ -7,7 +7,7 @@ Then The Error Message is displayed
 And User is redirected to the login page
 
 # Usage of Data Table for multiple parameters
-@SeleniumTest
+#@SeleniumTest
 Scenario: User Registration
 Given User is on the Home Page
 When User register with following details
