@@ -29,12 +29,6 @@ public class SearchStepDefinition {
 		webDriver.findElement(By.cssSelector("input[name='search']")).sendKeys(itemName);
 	}
 	
-	@Then("^\"([^\"]*)\" results are displayed on the page$")
-	public void item_results_are_displayed_on_page(String itemName) throws Throwable {
-		webDriver.get("https://www.faishop.com/index.php?route=product/search&search=Jersey&description=true");
-		Assert.assertTrue(webDriver.findElements(By.xpath("//h4[@class='name']/a")).get(0).getText().contains(itemName));
-	}
-	
 	@And("^\"([^\"]*)\" model results are displayed on the page$")
 	public void model_results_are_displayed_on_page(String itemName) throws Throwable {
 		String transformedItemName = itemName.toLowerCase();
