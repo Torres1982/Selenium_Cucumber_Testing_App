@@ -48,10 +48,12 @@ public class SearchStepDefinition {
 				
 		// Hover over the Cart
 		Actions actions = new Actions(webDriver);
+		
 		// Explicit Wait until the Cart Button is available
 		WebDriverWait wait = new WebDriverWait(webDriver, 5);
 		wait.until(ExpectedConditions.elementToBeClickable(mainAddToCartButton));
 		actions.moveToElement(webDriver.findElement(mainAddToCartButton)).build().perform();
+		
 		// Explicit Wait until the 'View Cart' Button is available
 		WebDriverWait wait2 = new WebDriverWait(webDriver, 5);
 		wait2.until(ExpectedConditions.elementToBeClickable(miniCartButton));		

@@ -15,7 +15,14 @@
 	</properties>
 
 	<dependencies>
-	<!-- JUnit Support -->
+		<!-- TestNG Support -->
+		<dependency>
+		    <groupId>org.testng</groupId>
+		    <artifactId>testng</artifactId>
+		    <version>7.0.0</version>
+		</dependency>
+		
+		<!-- JUnit Support -->
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
