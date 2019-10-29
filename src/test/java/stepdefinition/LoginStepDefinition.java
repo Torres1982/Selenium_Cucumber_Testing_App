@@ -7,9 +7,18 @@ import cucumber.api.DataTable;
 import cucumber.api.junit.Cucumber;
 import util.ChromeWebDriverUtility;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.junit.Assert;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.By;
@@ -28,6 +37,7 @@ public class LoginStepDefinition {
     	webDriver = ChromeWebDriverUtility.getWebDriver("url");
     }
     
+    // Login with usage of Parameterisation
     @When("^User logs in with a username (.+) and password (.+)$")
     public void user_logs_in_with_username_and_password(String email, String password) throws Throwable {
     	System.out.println("Username: " + email + ", Password: " + password);
@@ -37,6 +47,74 @@ public class LoginStepDefinition {
     	webDriver.findElement(By.id("input-email")).sendKeys(email);
     	// Type the password
     	webDriver.findElement(By.id("input-password")).sendKeys(password);
+    	// Click the Login button
+    	webDriver.findElement(By.cssSelector("input[value='Login']")).click();
+    }
+    
+    // Login with usage of Data Driven from the Excel file
+    @When("^User logs in with credentials retrieved from the Excel file$")
+    public void user_logs_in_with_credentials_retrieved_from_excel_file() throws IOException {
+    	// All Data retrieved from the Excel file will be stored in this Array
+    	ArrayList<String> loginDataArrayList = new ArrayList<>();
+    	
+    	FileInputStream inputFile = new FileInputStream("D:\\Documents\\Demo Projects\\Selenium and Cucumber\\Selenium_Tests_Excel_Data.xlsx");
+    	// Retrieve the Workbook Object
+    	XSSFWorkbook workbook = new XSSFWorkbook(inputFile);
+    	int sheetsNumber = workbook.getNumberOfSheets();
+    	String sheetName = "";
+    	XSSFSheet testDataSheet = null;
+    	
+    	for (int i = 0; i < sheetsNumber; i++) {
+    		if (workbook.getSheetName(i).equalsIgnoreCase("TestData")) {
+    			sheetName = workbook.getSheetName(i);
+    			testDataSheet = workbook.getSheetAt(i);
+    			
+    			// Find where the 'Test Case' column is located
+    			Iterator<Row> rows = testDataSheet.iterator();
+    			Row rowFirst = rows.next();
+    			Iterator<Cell> cells = rowFirst.cellIterator();
+    			int counter = 0;
+    			int columnIndex = 0;
+    			
+    			while (cells.hasNext()) {
+    				Cell cell = cells.next();
+    				
+    				if (cell.getStringCellValue().equalsIgnoreCase("Test Case")) {
+    					columnIndex = counter;
+    					System.out.println("Test Case Column Index: " + columnIndex);
+    				}
+    				counter++;
+    			}
+    			
+    			// Scan the whole 'Test Case' column to find required 'Test Case'
+    			while (rows.hasNext()) {
+    				Row row = rows.next();
+    				
+    				if (row.getCell(columnIndex).getStringCellValue().equalsIgnoreCase("Login")) {
+    					// Retrieve all data from the entire row of the 'Test Case' that has been found and use these data for tests
+    					Iterator<Cell> loginCellsIterator = row.cellIterator();
+    					
+    					while (loginCellsIterator.hasNext()) {
+    						Cell cell = loginCellsIterator.next();
+    						
+    						if (cell.getColumnIndex() != 0) {
+    							loginDataArrayList.add(cell.getStringCellValue());
+    						}
+    					}
+    				}
+    			}
+    		}
+    	}
+    	
+    	System.out.println("Workbook " + workbook + "\nNumber of Sheets: " + sheetsNumber + "\nRequired Sheet Name: " + sheetName);
+    	System.out.println("Login Array Size: " + loginDataArrayList.size());
+    	
+    	// Click the Login link
+    	webDriver.findElement(By.xpath("//div[@class='links']/ul/li[1]/a/span")).click();  	
+    	// Type the email
+    	webDriver.findElement(By.id("input-email")).sendKeys(loginDataArrayList.get(1));
+    	// Type the password
+    	webDriver.findElement(By.id("input-password")).sendKeys(loginDataArrayList.get(2));
     	// Click the Login button
     	webDriver.findElement(By.cssSelector("input[value='Login']")).click();
     }

@@ -1,6 +1,6 @@
 Feature: Active Links Testing
 
-@SeleniumTest
+#@SeleniumTest
 Scenario: Check the Section of Footer Links Availability
 
 Given User is on the faishop main page
