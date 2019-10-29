@@ -65,6 +65,19 @@ public class LoginStepDefinition {
     	Assert.assertTrue(webDriver.findElement(By.xpath("//span[contains(text(), 'Logout') and @class='top-menu-link']")).getText().contains("Logout"));
     }
     
+    // User Logout
+    @When("^User logs out$")
+    public void user_logs_out() throws Throwable {
+    	webDriver.findElement(By.xpath("//a[@class='m-item ']/span[contains(text(),'Logout')]")).click();
+    }
+    
+    @Then("^the Login Page should display$")
+    public void login_page_should_display() throws Throwable {
+    	Assert.assertTrue(webDriver.findElement(By.xpath("//div[@class='links']/ul/li[1]/a/span")).getText().contains("Login"));
+    	Assert.assertTrue(webDriver.findElement(By.cssSelector("#content h1")).getText().contains("Logout"));
+    }
+    
+    // User Registration
     @When("^User register with following details$")
     public void user_register_with_following_details(DataTable dataTable) throws Throwable {
     	List<List<String>> list = dataTable.raw();
