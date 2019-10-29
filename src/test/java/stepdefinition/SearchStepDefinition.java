@@ -21,7 +21,7 @@ public class SearchStepDefinition {
 	
 	@Given("^User is on the online shop landing page$")
 	public void user_is_on_football_shop_online_main_page() throws Throwable {
-		webDriver = ChromeWebDriverUtility.getWebDriver();
+		webDriver = ChromeWebDriverUtility.getWebDriver("url");
 	}
 	
 	@When("^User search for \"([^\"]*)\" items$")

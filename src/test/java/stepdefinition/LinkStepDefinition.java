@@ -24,7 +24,7 @@ public class LinkStepDefinition {
 	
 	@Given("^User is on the faishop main page$")
 	public void user_is_on_faishop_main_page() throws Throwable {
-		webDriver = ChromeWebDriverUtility.getWebDriver();
+		webDriver = ChromeWebDriverUtility.getWebDriver("url");
 	}
 	
 	@When("^User clicks the Information footer Links$")

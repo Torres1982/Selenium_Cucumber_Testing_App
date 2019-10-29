@@ -25,7 +25,7 @@ public class LoginStepDefinition {
 	
     @Given("^User is on the Home Page$")
     public void user_is_on_the_home_page() throws Throwable {
-    	webDriver = ChromeWebDriverUtility.getWebDriver();
+    	webDriver = ChromeWebDriverUtility.getWebDriver("url");
     }
     
     @When("^User logs in with a username (.+) and password (.+)$")
