@@ -12,7 +12,7 @@ import org.apache.poi.ss.util.NumberToTextConverter;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-public class ExcelTestDataDriven {
+public class ExcelTestDataDriven {	
 	public static ArrayList<String> getExcelData(String testCaseName) throws IOException {
     	ArrayList<String> loginDataArrayList = new ArrayList<>();
     	

@@ -1,5 +1,6 @@
 package stepdefinition;
 
+import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.When;
 import cucumber.api.java.en.Then;
@@ -7,11 +8,11 @@ import cucumber.api.DataTable;
 import cucumber.api.junit.Cucumber;
 import util.ChromeWebDriverUtility;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.logging.log4j.*;
 import org.junit.Assert;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.By;
@@ -24,6 +25,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 @RunWith(Cucumber.class)
 public class LoginStepDefinition {
 	public WebDriver webDriver;
+	static final Logger Logger = LogManager.getLogger(LoginStepDefinition.class.getName());
 	
     @Given("^User is on the Home Page$")
     public void user_is_on_the_home_page() throws Throwable {
@@ -33,7 +35,7 @@ public class LoginStepDefinition {
     // Login with usage of Parameterisation
     @When("^User logs in with a username (.+) and password (.+)$")
     public void user_logs_in_with_username_and_password(String email, String password) throws Throwable {
-    	System.out.println("Username: " + email + ", Password: " + password);
+    	Logger.info("Username: " + email + ", Password: " + password);
     	// Click the Login link
     	webDriver.findElement(By.xpath("//div[@class='links']/ul/li[1]/a/span")).click();  	
     	// Type the email
@@ -46,29 +48,32 @@ public class LoginStepDefinition {
     
     // Login with usage of Data Driven from the Excel file
     @When("^User logs in with credentials retrieved from the Excel file$")
-    public void user_logs_in_with_credentials_retrieved_from_excel_file() throws IOException {
+    public void user_logs_in_with_credentials_retrieved_from_excel_file() throws Throwable {
     	// All Data retrieved from the Excel file will be stored in this Array
     	ArrayList<String> loginDataArrayList = util.ExcelTestDataDriven.getExcelData("Login");
    	
     	// Click the Login link
-    	webDriver.findElement(By.xpath("//div[@class='links']/ul/li[1]/a/span")).click();  	
+    	webDriver.findElement(By.xpath("//div[@class='links']/ul/li[1]/a/span")).click();
     	// Type the email
     	webDriver.findElement(By.id("input-email")).sendKeys(loginDataArrayList.get(1));
     	// Type the password
     	webDriver.findElement(By.id("input-password")).sendKeys(loginDataArrayList.get(2));
     	// Click the Login button
     	webDriver.findElement(By.cssSelector("input[value='Login']")).click();
+    	
+    	Logger.info("Data Retrieved from the Excel file!");
     }
 
     @Then("^User accesses their profile page$")
     public void user_accesses_their_profile_page() throws Throwable {
-    	Assert.assertTrue(webDriver.findElement(By.xpath("//span[contains(text(), 'Logout') and @class='top-menu-link']")).getText().contains("Logout"));
+    	Assert.assertTrue(webDriver.findElement(By.xpath("//span[contains(text(), 'Logout')]")).getText().contains("Logout"));
     }
     
     // User Logout
-    @When("^User logs out$")
+    @And("^User logs out$")
     public void user_logs_out() throws Throwable {
     	webDriver.findElement(By.xpath("//a[@class='m-item ']/span[contains(text(),'Logout')]")).click();
+    	Logger.info("User Successfully Logged Out!");
     }
     
     @Then("^the Login Page should display$")
