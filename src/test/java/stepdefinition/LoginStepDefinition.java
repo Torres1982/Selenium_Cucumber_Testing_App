@@ -54,32 +54,37 @@ public class LoginStepDefinition {
    	
     	// Click the Login link
     	webDriver.findElement(By.xpath("//div[@class='links']/ul/li[1]/a/span")).click();
+    	Logger.debug("The Login link has been clicked!");
     	// Type the email
     	webDriver.findElement(By.id("input-email")).sendKeys(loginDataArrayList.get(1));
+    	Logger.info("User has been navigated to the Login page!");
+    	Logger.debug("User Email has been entered!");
     	// Type the password
     	webDriver.findElement(By.id("input-password")).sendKeys(loginDataArrayList.get(2));
+    	Logger.debug("User Password has been entered!");
     	// Click the Login button
     	webDriver.findElement(By.cssSelector("input[value='Login']")).click();
-    	
-    	Logger.info("Data Retrieved from the Excel file!");
+    	Logger.info("The Login Button has been clicked!");
     }
 
     @Then("^User accesses their profile page$")
     public void user_accesses_their_profile_page() throws Throwable {
     	Assert.assertTrue(webDriver.findElement(By.xpath("//span[contains(text(), 'Logout')]")).getText().contains("Logout"));
+    	Logger.info("User Accessed their Account!");
     }
     
     // User Logout
     @And("^User logs out$")
     public void user_logs_out() throws Throwable {
     	webDriver.findElement(By.xpath("//a[@class='m-item ']/span[contains(text(),'Logout')]")).click();
-    	Logger.info("User Successfully Logged Out!");
+    	Logger.info("User has been successfully Logged Out!");
     }
     
     @Then("^the Login Page should display$")
     public void login_page_should_display() throws Throwable {
     	Assert.assertTrue(webDriver.findElement(By.xpath("//div[@class='links']/ul/li[1]/a/span")).getText().contains("Login"));
     	Assert.assertTrue(webDriver.findElement(By.cssSelector("#content h1")).getText().contains("Logout"));
+    	Logger.info("The Login page is displayed!");
     }
     
     // User Registration
