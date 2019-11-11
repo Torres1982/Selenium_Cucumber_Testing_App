@@ -1,7 +1,7 @@
 Feature: Registration Testing Application
 
 # Usage of Data Table for multiple parameters
-@SeleniumTest
+#@SeleniumTest
 Scenario: User Registration
 Given User is on the Home Page
 When User register with following details

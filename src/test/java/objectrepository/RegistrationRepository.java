@@ -9,7 +9,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
-//Use Page Object Factory
+// Use Page Object Factory
 public class RegistrationRepository {
 	WebDriver webDriver;
 	private List<String> inputFields;
@@ -17,7 +17,7 @@ public class RegistrationRepository {
 	private WebElement registrationHeaderText;
 	@FindBy(id="input-country")
 	private WebElement country;
-	By selectedRegionOption = By.xpath("//select[@id='input-zone']/option[@value='2641']");
+	private By selectedRegionOption = By.xpath("//select[@id='input-zone']/option[@value='2641']");
 	@FindBy(id="input-zone")
 	private WebElement zone;
 	@FindBy(xpath="//input[@type='radio' and @name='newsletter']")
@@ -67,7 +67,7 @@ public class RegistrationRepository {
 	}
 	
 	public List<String> getRegistrationInputFieldSelectors() {
-    	// Fill in the Registration Form
+    	// String used for css Selectors
     	inputFields = Arrays.asList("#input-firstname", "#input-lastname", "#input-email", "#input-telephone", "#input-address-1",
     											 "#input-custom-field3", "#input-city", "#input-password", "#input-confirm");
     	return inputFields;
