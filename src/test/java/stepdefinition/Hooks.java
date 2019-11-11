@@ -17,7 +17,7 @@ public class Hooks extends ChromeWebDriverUtility {
 	
 	@Before("@SeleniumTest")
 	public void beforeActionSeleniumTest() {
-		System.out.println("*************** Opening Beffore Hook - Selenium Test");
+		System.out.println("*************** Opening Before Hook - Selenium Test");
 	}
 	
 	@After("@SeleniumTest")

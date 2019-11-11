@@ -8,6 +8,7 @@ import org.openqa.selenium.WebElement;
 public class HomeRepository {
 	WebDriver webDriver;
 	By loginLink = By.xpath("//div[@class='links']/ul/li[1]/a/span");
+	By registrationLink = By.xpath("//div[@class='links']/ul/li[2]/a");
 	
 	public HomeRepository(WebDriver webDriver) {
 		this.webDriver = webDriver;
@@ -15,5 +16,9 @@ public class HomeRepository {
 	
 	public WebElement getLoginLinkElement() {
 		return webDriver.findElement(loginLink);
+	}
+	
+	public WebElement getRegistrationLinkElement() {
+		return webDriver.findElement(registrationLink);
 	}
 }
