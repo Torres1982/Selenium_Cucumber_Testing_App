@@ -6,6 +6,8 @@ import cucumber.api.java.en.When;
 import cucumber.api.java.en.Then;
 import cucumber.api.DataTable;
 import cucumber.api.junit.Cucumber;
+import objectrepository.HomeRepository;
+import objectrepository.LoginRepository;
 import util.ChromeWebDriverUtility;
 
 import java.util.ArrayList;
@@ -25,7 +27,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 @RunWith(Cucumber.class)
 public class LoginStepDefinition {
 	public WebDriver webDriver;
-	static final Logger Logger = LogManager.getLogger(LoginStepDefinition.class.getName());
+	private static final Logger Logger = LogManager.getLogger(LoginStepDefinition.class.getName());
 	
     @Given("^User is on the Home Page$")
     public void user_is_on_the_home_page() throws Throwable {
@@ -35,35 +37,50 @@ public class LoginStepDefinition {
     // Login with usage of Parameterisation
     @When("^User logs in with a username (.+) and password (.+)$")
     public void user_logs_in_with_username_and_password(String email, String password) throws Throwable {
+    	// Create Simple Page Objects
+    	HomeRepository homeRepository = new HomeRepository(webDriver);
+    	LoginRepository loginRepository = new LoginRepository(webDriver);
+    	
     	Logger.info("Username: " + email + ", Password: " + password);
     	// Click the Login link
-    	webDriver.findElement(By.xpath("//div[@class='links']/ul/li[1]/a/span")).click();  	
+    	homeRepository.getLoginLinkElement().click();
+    	//webDriver.findElement(By.xpath("//div[@class='links']/ul/li[1]/a/span")).click();
     	// Type the email
-    	webDriver.findElement(By.id("input-email")).sendKeys(email);
+    	loginRepository.getEmailInputElement().sendKeys(email);
+    	//webDriver.findElement(By.id("input-email")).sendKeys(email);
     	// Type the password
-    	webDriver.findElement(By.id("input-password")).sendKeys(password);
+    	loginRepository.getPasswordInputElement().sendKeys(password);
+    	//webDriver.findElement(By.id("input-password")).sendKeys(password);
     	// Click the Login button
-    	webDriver.findElement(By.cssSelector("input[value='Login']")).click();
+    	loginRepository.getLoginButtonElement().click();
+    	//webDriver.findElement(By.cssSelector("input[value='Login']")).click();
     }
     
     // Login with usage of Data Driven from the Excel file
     @When("^User logs in with credentials retrieved from the Excel file$")
     public void user_logs_in_with_credentials_retrieved_from_excel_file() throws Throwable {
+    	// Create Simple Page Objects
+    	HomeRepository homeRepository = new HomeRepository(webDriver);
+    	LoginRepository loginRepository = new LoginRepository(webDriver);
     	// All Data retrieved from the Excel file will be stored in this Array
     	ArrayList<String> loginDataArrayList = util.ExcelTestDataDriven.getExcelData("Login");
    	
     	// Click the Login link
-    	webDriver.findElement(By.xpath("//div[@class='links']/ul/li[1]/a/span")).click();
+    	homeRepository.getLoginLinkElement().click();
+    	//webDriver.findElement(By.xpath("//div[@class='links']/ul/li[1]/a/span")).click();
     	Logger.debug("The Login link has been clicked!");
     	// Type the email
-    	webDriver.findElement(By.id("input-email")).sendKeys(loginDataArrayList.get(1));
+    	loginRepository.getEmailInputElement().sendKeys(loginDataArrayList.get(1));
+    	//webDriver.findElement(By.id("input-email")).sendKeys(loginDataArrayList.get(1));
     	Logger.info("User has been navigated to the Login page!");
     	Logger.debug("User Email has been entered!");
     	// Type the password
-    	webDriver.findElement(By.id("input-password")).sendKeys(loginDataArrayList.get(2));
+    	loginRepository.getPasswordInputElement().sendKeys(loginDataArrayList.get(2));
+    	//webDriver.findElement(By.id("input-password")).sendKeys(loginDataArrayList.get(2));
     	Logger.debug("User Password has been entered!");
     	// Click the Login button
-    	webDriver.findElement(By.cssSelector("input[value='Login']")).click();
+    	loginRepository.getLoginButtonElement().click();
+    	//webDriver.findElement(By.cssSelector("input[value='Login']")).click();
     	Logger.info("The Login Button has been clicked!");
     }
 

@@ -1,6 +1,6 @@
 Feature: Logout Testing Application
 
-@SeleniumTest
+#@SeleniumTest
 Scenario: User Logs out of the Profile page
 Given User is on the Home Page
 When User logs in with credentials retrieved from the Excel file

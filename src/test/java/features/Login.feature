@@ -13,7 +13,7 @@ Examples:
 #| andy654321@gmail.com | pass1    |
 
 # This Login example uses Excel Data Driven to retrieve login credentials from the Excel file
-#@SeleniumTest
+@SeleniumTest
 Scenario: Successful User Login Excel Data Driven
 Given User is on the Home Page
 When User logs in with credentials retrieved from the Excel file
