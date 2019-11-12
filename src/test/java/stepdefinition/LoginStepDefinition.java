@@ -20,20 +20,18 @@ import org.apache.logging.log4j.*;
 import org.junit.Assert;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 @RunWith(Cucumber.class)
-public class LoginStepDefinition {
-	public WebDriver webDriver;
+public class LoginStepDefinition extends ChromeWebDriverUtility {
 	private static final Logger logger = LogManager.getLogger(LoginStepDefinition.class.getName());
 	
     @Given("^User is on the Home Page$")
     public void user_is_on_the_home_page() throws Throwable {
-    	webDriver = ChromeWebDriverUtility.getWebDriver("url");
+    	webDriver = ChromeWebDriverUtility.getWebDriver();
     }
     
     // Login with usage of Parameterisation

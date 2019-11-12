@@ -4,7 +4,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.Assert;
 import org.junit.runner.RunWith;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -18,13 +17,12 @@ import objectrepository.SearchRepository;
 import util.ChromeWebDriverUtility;
 
 @RunWith(Cucumber.class)
-public class SearchStepDefinition {
-	public WebDriver webDriver;
+public class SearchStepDefinition extends ChromeWebDriverUtility {
 	private final static Logger logger = LogManager.getLogger(SearchStepDefinition.class.getName());
 	
 	@Given("^User is on the online shop landing page$")
 	public void user_is_on_football_shop_online_main_page() throws Throwable {
-		webDriver = ChromeWebDriverUtility.getWebDriver("url");
+		webDriver = ChromeWebDriverUtility.getWebDriver();
 	}
 	
 	@When("^User search for \"([^\"]*)\" items$")
@@ -38,7 +36,7 @@ public class SearchStepDefinition {
 	public void model_results_are_displayed_on_page(String itemName) throws Throwable {
 		SearchRepository searchRepository = new SearchRepository(webDriver);
 		String transformedItemName = itemName.toLowerCase();
-		webDriver.get("https://www.faishop.com/index.php?route=product/search&search=Football&description=true");
+		webDriver.get(properties.getProperty("searchedItemResultsUrl"));
 		Assert.assertTrue(searchRepository.getSearchedItemElements().get(0).getText().toLowerCase().contains(transformedItemName));
 		logger.info(itemName + " items are displayed on the page!");
 	}
@@ -68,7 +66,7 @@ public class SearchStepDefinition {
 		logger.debug("User clisks the link to process to a Shopping Cart page!");
 		
 		// Go to the Shopping Cart page
-		webDriver.get("https://www.faishop.com/index.php?route=checkout/cart");
+		webDriver.get(properties.getProperty("shoppingCartPageUrl"));
 	}
 
 	@Then("^verified selected \"([^\"]*)\" items are displayed on the Checkout page$")

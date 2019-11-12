@@ -8,7 +8,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 
@@ -20,14 +19,13 @@ import objectrepository.HomeRepository;
 import util.ChromeWebDriverUtility;
 
 @RunWith(Cucumber.class)
-public class LinkStepDefinition {
-	public WebDriver webDriver;
+public class LinkStepDefinition extends ChromeWebDriverUtility {
 	private List<WebElement> informationLinks;
 	private static final Logger logger = LogManager.getLogger(LinkStepDefinition.class.getName());
 	
 	@Given("^User is on the faishop main page$")
 	public void user_is_on_faishop_main_page() throws Throwable {
-		webDriver = ChromeWebDriverUtility.getWebDriver("url");
+		webDriver = ChromeWebDriverUtility.getWebDriver();
 	}
 	
 	@When("^User clicks the Information footer Links$")
