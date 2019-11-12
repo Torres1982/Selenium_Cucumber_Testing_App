@@ -34,42 +34,19 @@ public class RegistrationRepository {
 		PageFactory.initElements(webDriver, this);
 	}
 	
-	public WebElement getRegistrationHeaderText() {
-		return registrationHeaderText;
-	}
-	
-	public WebElement getCountry() {
-		return country;
-	}
-	
-	public By getSelectedRegionOption() {
-		return selectedRegionOption;
-	}
-	
-	public WebElement getZone() {
-		return zone;
-	}
-	
-	public List<WebElement> getRadioButtons() {
-		return radioButtons;
-	}
-	
-	public WebElement getAgreeCheckBox() {
-		return agreeCheckBox;
-	}
-	
-	public List<WebElement> getCheckBoxes() {
-		return checkBoxes;
-	}
-	
-	public WebElement getRegistrationButton() {
-		return registrationButton;
-	}
+	public WebElement getRegistrationHeaderText() { return registrationHeaderText; }
+	public WebElement getCountry() { return country; }
+	public By getSelectedRegionOption() { return selectedRegionOption; }
+	public WebElement getZone() { return zone; }
+	public List<WebElement> getRadioButtons() { return radioButtons; }
+	public WebElement getAgreeCheckBox() { return agreeCheckBox; }
+	public List<WebElement> getCheckBoxes() { return checkBoxes; }
+	public WebElement getRegistrationButton() { return registrationButton; }
 	
 	public List<String> getRegistrationInputFieldSelectors() {
     	// String used for css Selectors
     	inputFields = Arrays.asList("#input-firstname", "#input-lastname", "#input-email", "#input-telephone", "#input-address-1",
-    											 "#input-custom-field3", "#input-city", "#input-password", "#input-confirm");
+    								"#input-custom-field3", "#input-city", "#input-password", "#input-confirm");
     	return inputFields;
 	}
 }

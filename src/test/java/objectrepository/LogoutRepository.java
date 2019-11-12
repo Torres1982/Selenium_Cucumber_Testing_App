@@ -15,7 +15,5 @@ public class LogoutRepository {
 		PageFactory.initElements(webDriver, this);
 	}
 	
-	public WebElement getLogoutHeaderText() {
-		return logoutHeaderText;
-	}
+	public WebElement getLogoutHeaderText() { return logoutHeaderText; }
 }

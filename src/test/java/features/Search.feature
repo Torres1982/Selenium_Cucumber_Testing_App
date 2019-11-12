@@ -1,6 +1,6 @@
 Feature: Search and Place Orders for Football Items
 
-@SeleniumTest
+#@SeleniumTest
 Scenario: Select the Item and navigate to a Checkout page
 Given User is on the online shop landing page
 When User search for "Football" items

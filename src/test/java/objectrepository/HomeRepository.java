@@ -23,19 +23,8 @@ public class HomeRepository {
 		PageFactory.initElements(webDriver, this);
 	}
 	
-	public WebElement getLoginLinkElement() {
-		return webDriver.findElement(loginLink);
-	}
-	
-	public WebElement getRegistrationLinkElement() {
-		return webDriver.findElement(registrationLink);
-	}
-	
-	public WebElement getColumnLinksElement() {
-		return columnLinks;
-	}
-	
-	public By getInformationLinks() {
-		return informationLinks;
-	}
+	public WebElement getLoginLinkElement() { return webDriver.findElement(loginLink); }
+	public WebElement getRegistrationLinkElement() { return webDriver.findElement(registrationLink); }
+	public WebElement getColumnLinksElement() { return columnLinks; }
+	public By getInformationLinks() { return informationLinks; }
 }

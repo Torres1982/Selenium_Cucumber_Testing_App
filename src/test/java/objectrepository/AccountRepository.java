@@ -15,7 +15,5 @@ public class AccountRepository {
 		PageFactory.initElements(webDriver, this);
 	}
 	
-	public WebElement getLogoutButtonElement() {
-		return logoutButton;
-	}
+	public WebElement getLogoutButtonElement() { return logoutButton; }
 }

@@ -20,15 +20,7 @@ public class LoginRepository {
 		PageFactory.initElements(webDriver, this);
 	}
 	
-	public WebElement getEmailInputElement() {
-		return email;
-	}
-	
-	public WebElement getPasswordInputElement() {
-		return password;
-	}
-	
-	public WebElement getLoginButtonElement() {
-		return loginButton;
-	}
+	public WebElement getEmailInputElement() { return email; }
+	public WebElement getPasswordInputElement() { return password; }
+	public WebElement getLoginButtonElement() { return loginButton; }
 }

@@ -35,39 +35,13 @@ public class SearchRepository {
 		PageFactory.initElements(webDriver, this);
 	}
 	
-	public WebElement getSearchInputElement() {
-		return searchInput;
-	}
-	
-	public List<WebElement> getSearchedItemElements() {
-		return searchedItemElements;
-	}
-	
-	public WebElement getAddToCartButtonElement() {
-		return addToCartButtonElement;
-	}
-	
-	public By getMainCartButtonBy() {
-		return mainAddToCartButton;
-	}
-	
-	public By getMiniCartButtonBy() {
-		return miniCartButton;
-	}
-	
-	public WebElement getMainCartButtonElement() {
-		return mainCartButtonElement;
-	}
-	
-	public WebElement getMiniCartButtonElement() {
-		return miniCartButtonElement;
-	}
-	
-	public List<WebElement> getIframesElements() {
-		return iframes;
-	}
-	
-	public WebElement getDisplayedItemName() {
-		return itemNamElement;
-	}
+	public WebElement getSearchInputElement() { return searchInput; }
+	public List<WebElement> getSearchedItemElements() { return searchedItemElements; }
+	public WebElement getAddToCartButtonElement() { return addToCartButtonElement; }
+	public By getMainCartButtonBy() { return mainAddToCartButton; }
+	public By getMiniCartButtonBy() { return miniCartButton; }
+	public WebElement getMainCartButtonElement() { return mainCartButtonElement; }
+	public WebElement getMiniCartButtonElement() { return miniCartButtonElement; }
+	public List<WebElement> getIframesElements() { return iframes; }
+	public WebElement getDisplayedItemName() { return itemNamElement; }
 }

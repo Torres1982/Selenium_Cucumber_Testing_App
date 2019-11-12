@@ -4,7 +4,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
-
+import java.lang.String;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
@@ -16,7 +16,7 @@ public class ExcelTestDataDriven {
 	public static ArrayList<String> getExcelData(String testCaseName) throws IOException {
     	ArrayList<String> loginDataArrayList = new ArrayList<>();
     	
-    	FileInputStream inputFile = new FileInputStream("D:\\Documents\\Demo Projects\\Selenium and Cucumber\\Selenium_Tests_Excel_Data.xlsx");
+    	FileInputStream inputFile = new FileInputStream(System.getProperty("user.dir") + "\\resources\\selenium_tests_excel_data.xlsx");
     	// Retrieve the Workbook Object
     	XSSFWorkbook workbook = new XSSFWorkbook(inputFile);
     	int sheetsNumber = workbook.getNumberOfSheets();
