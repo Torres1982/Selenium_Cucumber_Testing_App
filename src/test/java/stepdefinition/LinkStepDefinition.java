@@ -7,7 +7,6 @@ import java.util.Set;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.runner.RunWith;
-import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -17,13 +16,14 @@ import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import cucumber.api.junit.Cucumber;
+import objectrepository.HomeRepository;
 import util.ChromeWebDriverUtility;
 
 @RunWith(Cucumber.class)
 public class LinkStepDefinition {
 	public WebDriver webDriver;
 	private List<WebElement> informationLinks;
-	private static final Logger Logger = LogManager.getLogger(LinkStepDefinition.class.getName());
+	private static final Logger logger = LogManager.getLogger(LinkStepDefinition.class.getName());
 	
 	@Given("^User is on the faishop main page$")
 	public void user_is_on_faishop_main_page() throws Throwable {
@@ -32,16 +32,17 @@ public class LinkStepDefinition {
 	
 	@When("^User clicks the Information footer Links$")
 	public void user_clicks_information_footer_links() throws Throwable {
+		HomeRepository homeRepository = new HomeRepository(webDriver);
 		// Limiting the scope of the Footer Section (Information column)
-		Logger.debug("Identifying clickable footer Links!");
-		WebElement informationColumn = webDriver.findElement(By.xpath("//div[@id='footer']/div[2]/div[2]"));
-		informationLinks = informationColumn.findElements(By.tagName("a"));
+		logger.debug("Identifying clickable footer Links!");
+		WebElement informationColumn = homeRepository.getColumnLinksElement();
+		informationLinks = informationColumn.findElements(homeRepository.getInformationLinks());
 		
 		for (int i = 0; i < informationLinks.size(); i++) {
 			// Assign a Keyboard Event to open Links in a new Tab
 			String clickFooterLink = Keys.chord(Keys.CONTROL, Keys.ENTER);
 			informationLinks.get(i).sendKeys(clickFooterLink);
-			Logger.info("Link " + informationLinks.get(i) + " clicked!");
+			logger.info("Link " + informationLinks.get(i) + " clicked!");
 		}
 	}
 	
@@ -52,11 +53,11 @@ public class LinkStepDefinition {
 		int windowsNumber = windows.size();
 		int openedTabsNumber = informationLinks.size();
 		
-		Logger.debug("Number of opened Tabs: " + windowsNumber);
+		logger.debug("Number of opened Tabs: " + windowsNumber);
 		
 		while (iterator.hasNext()) {
 			webDriver.switchTo().window(iterator.next());
-			Logger.info("New Tab: " + webDriver.getTitle());
+			logger.info("New Tab: " + webDriver.getTitle());
 		}
 		
 		Assert.assertEquals(windowsNumber - 1, openedTabsNumber);
