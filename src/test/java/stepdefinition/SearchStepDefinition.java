@@ -19,6 +19,7 @@ import util.ChromeWebDriverUtility;
 @RunWith(Cucumber.class)
 public class SearchStepDefinition extends ChromeWebDriverUtility {
 	private final static Logger logger = LogManager.getLogger(SearchStepDefinition.class.getName());
+	SearchRepository searchRepository;
 	
 	@Given("^User is on the online shop landing page$")
 	public void user_is_on_football_shop_online_main_page() throws Throwable {
@@ -27,14 +28,13 @@ public class SearchStepDefinition extends ChromeWebDriverUtility {
 	
 	@When("^User search for \"([^\"]*)\" items$")
 	public void user_search_for_selected_items(String itemName) throws Throwable {
-		SearchRepository searchRepository = new SearchRepository(webDriver);
+		searchRepository = new SearchRepository(webDriver);
 		searchRepository.getSearchInputElement().sendKeys(itemName);
 		logger.debug("User searched for " + itemName + " item!");		
 	}
 	
 	@And("^\"([^\"]*)\" model results are displayed on the page$")
 	public void model_results_are_displayed_on_page(String itemName) throws Throwable {
-		SearchRepository searchRepository = new SearchRepository(webDriver);
 		String transformedItemName = itemName.toLowerCase();
 		webDriver.get(properties.getProperty("searchedItemResultsUrl"));
 		Assert.assertTrue(searchRepository.getSearchedItemElements().get(0).getText().toLowerCase().contains(transformedItemName));
@@ -43,7 +43,6 @@ public class SearchStepDefinition extends ChromeWebDriverUtility {
 
 	@And("^User proceeded to the Checkout page to buy the items$")
 	public void user_proceeded_to_the_checkout_page_to_buy_the_items() throws Throwable {
-		SearchRepository searchRepository = new SearchRepository(webDriver);
 		searchRepository.getSearchedItemElements().get(0).click();
 		logger.debug("User cliks the item link!");
 		// Add the item to the Cart
@@ -71,7 +70,6 @@ public class SearchStepDefinition extends ChromeWebDriverUtility {
 
 	@Then("^verified selected \"([^\"]*)\" items are displayed on the Checkout page$")
 	public void verified_selected_items_are_displayed_on_the_checkout_page(String itemName) throws Throwable {
-		SearchRepository searchRepository = new SearchRepository(webDriver);
 		logger.info("User navigates to a Shopping Cart page!");
 		String transformedItemName = itemName.toLowerCase();
 		System.out.println("Number of Frames: " + searchRepository.getIframesElements().size());

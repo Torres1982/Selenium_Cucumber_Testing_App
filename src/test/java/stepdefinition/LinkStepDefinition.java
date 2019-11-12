@@ -22,6 +22,7 @@ import util.ChromeWebDriverUtility;
 public class LinkStepDefinition extends ChromeWebDriverUtility {
 	private List<WebElement> informationLinks;
 	private static final Logger logger = LogManager.getLogger(LinkStepDefinition.class.getName());
+	HomeRepository homeRepository;
 	
 	@Given("^User is on the faishop main page$")
 	public void user_is_on_faishop_main_page() throws Throwable {
@@ -30,7 +31,7 @@ public class LinkStepDefinition extends ChromeWebDriverUtility {
 	
 	@When("^User clicks the Information footer Links$")
 	public void user_clicks_information_footer_links() throws Throwable {
-		HomeRepository homeRepository = new HomeRepository(webDriver);
+		homeRepository = new HomeRepository(webDriver);
 		// Limiting the scope of the Footer Section (Information column)
 		logger.debug("Identifying clickable footer Links!");
 		WebElement informationColumn = homeRepository.getColumnLinksElement();
