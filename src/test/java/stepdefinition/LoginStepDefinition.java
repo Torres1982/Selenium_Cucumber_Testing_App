@@ -12,7 +12,11 @@ import objectrepository.LoginRepository;
 import objectrepository.LogoutRepository;
 import objectrepository.RegistrationRepository;
 import util.ChromeWebDriverUtility;
+import util.JdbcConnection;
 
+import java.io.IOException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -72,6 +76,38 @@ public class LoginStepDefinition extends ChromeWebDriverUtility {
     	logger.debug("User Email has been entered!");
     	// Type the password
     	loginRepository.getPasswordInputElement().sendKeys(loginDataArrayList.get(2));
+    	logger.debug("User Password has been entered!");
+    	// Click the Login button
+    	loginRepository.getLoginButtonElement().click();
+    	logger.info("The Login Button has been clicked!");
+    }
+    
+    // Login with usage of Data Driven from DB
+    @When("^User logs in with credentials retrieved from DB$")
+    public void user_logs_in_with_credentials_retrieved_from_db() throws IOException, SQLException {
+    	String email = "";
+    	String password = "";
+    	// Create Simple Page Objects
+    	loginRepository = new LoginRepository(webDriver);
+    	ResultSet logins = JdbcConnection.getLoginUsers();
+    	
+		while (logins.next()) {
+			email = logins.getString("email");
+			password = logins.getString("password");
+			
+			logger.info("Email retrieved from DB: " + email);
+			logger.info("Password retrieved from DB: " + password);
+		}
+    	
+    	// Click the Login link
+    	homeRepository.getLoginLinkElement().click();
+    	logger.debug("The Login link has been clicked!");
+    	// Type the email
+    	loginRepository.getEmailInputElement().sendKeys(email);
+    	logger.info("User has been navigated to the Login page!");
+    	logger.debug("User Email has been entered!");
+    	// Type the password
+    	loginRepository.getPasswordInputElement().sendKeys(password);
     	logger.debug("User Password has been entered!");
     	// Click the Login button
     	loginRepository.getLoginButtonElement().click();
