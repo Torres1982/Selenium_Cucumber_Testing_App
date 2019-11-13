@@ -98,7 +98,7 @@ public class LoginStepDefinition extends ChromeWebDriverUtility {
 			logger.info("Email retrieved from DB: " + email);
 			logger.info("Password retrieved from DB: " + password);
 		}
-    	
+    		
     	// Click the Login link
     	homeRepository.getLoginLinkElement().click();
     	logger.debug("The Login link has been clicked!");

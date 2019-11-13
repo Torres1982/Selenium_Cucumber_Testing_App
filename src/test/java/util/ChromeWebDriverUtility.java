@@ -1,6 +1,5 @@
 package util;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
@@ -15,10 +14,8 @@ public class ChromeWebDriverUtility {
 	
 	// Create a WebDriver Utility class to be shared among all Step Definition Scenarios
 	public static WebDriver getWebDriver() throws IOException {
-		properties = new Properties();
 		String userPath = System.getProperty("user.dir") + "\\resources\\";
-		FileInputStream inputStreamFile = new FileInputStream(userPath + "global.properties");
-		properties.load(inputStreamFile);
+		properties = PropertiesUtility.getPropertiesValues("global.properties");
 		String browser = properties.getProperty("browser");
 		// If you need to Send the browser name in maven console command
 		//mvn test -Dbrowser=firefox

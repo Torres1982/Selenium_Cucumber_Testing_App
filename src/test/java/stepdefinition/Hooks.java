@@ -1,8 +1,11 @@
 package stepdefinition;
 
+import java.sql.SQLException;
+
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
 import util.ChromeWebDriverUtility;
+import util.JdbcConnection;
 
 public class Hooks extends ChromeWebDriverUtility {	
 	@Before("@WebTest")
@@ -21,10 +24,11 @@ public class Hooks extends ChromeWebDriverUtility {
 	}
 	
 	@After("@SeleniumTest")
-	public void webAfterActionSeleniumTest() {
+	public void webAfterActionSeleniumTest() throws SQLException {
 		webDriver.close();
 		webDriver.quit();
 		webDriver = null;
+		JdbcConnection.closeConnections();
 		System.out.println("*************** Closing Web After Hook - Selenium Test");
 	}
 }
