@@ -23,6 +23,7 @@ public class Hooks extends ChromeWebDriverUtility {
 	@After("@SeleniumTest")
 	public void webAfterActionSeleniumTest() {
 		webDriver.close();
+		webDriver.quit();
 		webDriver = null;
 		System.out.println("*************** Closing Web After Hook - Selenium Test");
 	}

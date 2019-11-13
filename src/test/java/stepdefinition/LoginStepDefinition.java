@@ -28,18 +28,21 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 @RunWith(Cucumber.class)
 public class LoginStepDefinition extends ChromeWebDriverUtility {
 	private static final Logger logger = LogManager.getLogger(LoginStepDefinition.class.getName());
+	HomeRepository homeRepository;
+	LoginRepository loginRepository;
+	AccountRepository accountRepository;
 	
     @Given("^User is on the Home Page$")
     public void user_is_on_the_home_page() throws Throwable {
     	webDriver = ChromeWebDriverUtility.getWebDriver();
+    	homeRepository = new HomeRepository(webDriver);
     }
     
     // Login with usage of Parameterisation
     @When("^User logs in with a username (.+) and password (.+)$")
     public void user_logs_in_with_username_and_password(String email, String password) throws Throwable {
-    	// Create Simple Page Objects
-    	HomeRepository homeRepository = new HomeRepository(webDriver);
-    	LoginRepository loginRepository = new LoginRepository(webDriver);
+    	// Create Simple Page Objects   	
+    	loginRepository = new LoginRepository(webDriver);
     	
     	logger.info("Username: " + email + ", Password: " + password);
     	// Click the Login link
@@ -56,8 +59,7 @@ public class LoginStepDefinition extends ChromeWebDriverUtility {
     @When("^User logs in with credentials retrieved from the Excel file$")
     public void user_logs_in_with_credentials_retrieved_from_excel_file() throws Throwable {
     	// Create Simple Page Objects
-    	HomeRepository homeRepository = new HomeRepository(webDriver);
-    	LoginRepository loginRepository = new LoginRepository(webDriver);
+    	loginRepository = new LoginRepository(webDriver);
     	// All Data retrieved from the Excel file will be stored in this Array
     	ArrayList<String> loginDataArrayList = util.ExcelTestDataDriven.getExcelData("Login");
    	
@@ -78,7 +80,7 @@ public class LoginStepDefinition extends ChromeWebDriverUtility {
 
     @Then("^User accesses their profile page$")
     public void user_accesses_their_profile_page() throws Throwable {
-    	AccountRepository accountRepository = new AccountRepository(webDriver);
+    	accountRepository = new AccountRepository(webDriver);
     	Assert.assertTrue(accountRepository.getLogoutButtonElement().getText().contains("Logout"));
     	logger.info("User Accessed their Account!");
     }
@@ -86,14 +88,12 @@ public class LoginStepDefinition extends ChromeWebDriverUtility {
     // User Logout
     @And("^User logs out$")
     public void user_logs_out() throws Throwable {
-    	AccountRepository accountRepository = new AccountRepository(webDriver);
     	accountRepository.getLogoutButtonElement().click();
     	logger.info("User has been successfully Logged Out!");
     }
     
     @Then("^the Login Page should display$")
     public void login_page_should_display() throws Throwable {
-    	HomeRepository homeRepository = new HomeRepository(webDriver);
     	LogoutRepository logoutRepository = new LogoutRepository(webDriver);
     	Assert.assertTrue(homeRepository.getLoginLinkElement().getText().contains("Login"));
     	Assert.assertTrue(logoutRepository.getLogoutHeaderText().getText().contains("Logout"));
@@ -103,7 +103,6 @@ public class LoginStepDefinition extends ChromeWebDriverUtility {
     // User Registration
     @When("^User register with following details$")
     public void user_register_with_following_details(DataTable dataTable) throws Throwable {
-    	HomeRepository homeRepository = new HomeRepository(webDriver);
     	RegistrationRepository registrationRepository = new RegistrationRepository(webDriver);
     	List<List<String>> list = dataTable.raw();
     	
@@ -196,7 +195,7 @@ public class LoginStepDefinition extends ChromeWebDriverUtility {
     	logger.info("Number of Checkboxes: " + registrationRepository.getCheckBoxes().size());
     	
     	// Submit and Register
-    	registrationRepository.getRegistrationButton().click();
+    	//registrationRepository.getRegistrationButton().click();
     	logger.debug("Registration Submit Button has been clicked!");
     }
 }
