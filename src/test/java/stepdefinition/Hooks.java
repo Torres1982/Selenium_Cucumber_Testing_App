@@ -25,7 +25,7 @@ public class Hooks extends ChromeWebDriverUtility {
 	
 	@After("@SeleniumTest")
 	public void webAfterActionSeleniumTest() throws SQLException {
-		webDriver.close();
+		//webDriver.close();
 		webDriver.quit();
 		webDriver = null;
 		JdbcConnection.closeConnections();

@@ -10,7 +10,7 @@ Then User accesses their profile page
 Examples:
 | username 				| password |
 | artur123@gmail.com 	| pass1    |
-#| andy654321@gmail.com | pass1    |
+| andy654321@gmail.com  | pass1    |
 
 # This Login example uses Excel Data Driven to retrieve login credentials from the Excel file
 #@SeleniumTest
@@ -20,7 +20,7 @@ When User logs in with credentials retrieved from the Excel file
 Then User accesses their profile page
 
 # This Login example uses JDBC Connection to DB to get login credentials
-@SeleniumTest
+#@SeleniumTest
 Scenario: Successful User Login using MySql DB
 Given User is on the Home Page
 When User logs in with credentials retrieved from DB
