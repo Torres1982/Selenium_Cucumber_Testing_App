@@ -17,4 +17,4 @@ Given User is on the Home Page
 When User register with following details
 ||||||||||
 
-Then User accesses their profile page "registration_false_empty_fields"
+Then User accesses their profile page "false_registration_empty_fields"

@@ -125,28 +125,10 @@ public class LoginStepDefinition extends ChromeWebDriverUtility {
     	} else if (access.equals("false")) {
     		Assert.assertTrue(loginRepository.getWarningAlertElement().getText().contains("Warning"));
     		logger.info("User Provided Wrong Credentials!");
-    	} else if (access.equals("registration_false_empty_fields")) {
+    	} else if (access.equals("false_registration_empty_fields")) {
     		List<WebElement> warningElements = webDriver.findElements(By.className("text-danger"));
-    		
-    		// Check for Red Warning Messages
-    		for (int i = 0; i < warningElements.size(); i++) {
-    			logger.warn(warningElements.get(i).getText());
-    			
-    			if (warningElements.get(i).isDisplayed()) {
-    				Assert.assertFalse(warningElements.get(i).getText().length() == 0);
-    			}
-    		}
-    		
-    		// Check for empty Input Fields
-        	for (int i = 0; i < registrationRepository.getRegistrationInputFieldSelectors().size(); i++) {
-        		WebElement requiredField = webDriver.findElement(By.cssSelector(registrationRepository.getRegistrationInputFieldSelectors().get(i)));
-        		
-        		if ((requiredField.getText()).equals("")) {
-        			logger.debug(i + " - " + requiredField + " is blank!");
-        			Assert.assertTrue(requiredField.getText().isEmpty());
-        		}
-        	}
-        	
+    		checkRegistrationWarningMessages(warningElements);
+    		checkRegistrationEmptyInputFields();       	
     		logger.info("You need to fill all the required input fields!");
     	}
     }
@@ -264,5 +246,32 @@ public class LoginStepDefinition extends ChromeWebDriverUtility {
     	// Submit and Register
     	registrationRepository.getRegistrationButton().click();
     	logger.debug("Registration Submit Button has been clicked!");
+    }
+    
+    // **************************************************************************************************
+    //										HELPER METHODS
+    // **************************************************************************************************
+    
+    // Check for Registration Warning Messages
+    private void checkRegistrationWarningMessages(List<WebElement> list) {
+		for (int i = 0; i < list.size(); i++) {
+			logger.warn(list.get(i).getText());
+			
+			if (list.get(i).isDisplayed()) {
+				Assert.assertFalse(list.get(i).getText().length() == 0);
+			}
+		}
+    }
+    
+    // Check for Registration empty Input Fields
+    private void checkRegistrationEmptyInputFields() {		
+    	for (int i = 0; i < registrationRepository.getRegistrationInputFieldSelectors().size(); i++) {
+    		WebElement requiredField = webDriver.findElement(By.cssSelector(registrationRepository.getRegistrationInputFieldSelectors().get(i)));
+    		
+    		if ((requiredField.getText()).equals("")) {
+    			logger.debug(i + " - " + requiredField + " is blank!");
+    			Assert.assertTrue(requiredField.getText().isEmpty());
+    		}
+    	}
     }
 }
