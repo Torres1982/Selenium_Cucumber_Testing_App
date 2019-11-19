@@ -28,6 +28,10 @@ public class RegistrationRepository {
 	private List<WebElement> checkBoxes;
 	@FindBy(css="div[class='pull-right'] input[type='submit']")
 	private WebElement registrationButton;
+	@FindBy(id="input-password")
+	private WebElement password;
+	@FindBy(id="input-confirm")
+	private WebElement confirm;
 	
 	public RegistrationRepository(WebDriver webDriver) {
 		this.webDriver = webDriver;
@@ -42,6 +46,8 @@ public class RegistrationRepository {
 	public WebElement getAgreeCheckBox() { return agreeCheckBox; }
 	public List<WebElement> getCheckBoxes() { return checkBoxes; }
 	public WebElement getRegistrationButton() { return registrationButton; }
+	public WebElement getRegistrationPassword() { return password; }
+	public WebElement getRegistrationConfirm() { return confirm; }
 	
 	public List<String> getRegistrationInputFieldSelectors() {
     	// String used for css Selectors

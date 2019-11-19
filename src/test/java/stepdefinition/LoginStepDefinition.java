@@ -20,6 +20,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import java.lang.String;
+
 import org.apache.logging.log4j.*;
 import org.junit.Assert;
 import org.junit.runner.RunWith;
@@ -122,10 +124,14 @@ public class LoginStepDefinition extends ChromeWebDriverUtility {
     	if (access.equals("true")) {
 	    	Assert.assertTrue(accountRepository.getLogoutButtonElement().getText().contains("Logout"));
 	    	logger.info("User Accessed their Account!");
-    	} else if (access.equals("false")) {
+    	}
+    	
+    	if (access.equals("false")) {
     		Assert.assertTrue(loginRepository.getWarningAlertElement().getText().contains("Warning"));
     		logger.info("User Provided Wrong Credentials!");
-    	} else if (access.equals("false_registration_empty_fields")) {
+    	}
+    	
+    	if (access.equals("false_registration_empty_fields")) {
     		List<WebElement> warningElements = webDriver.findElements(By.className("text-danger"));
     		checkRegistrationWarningMessages(warningElements);
     		checkRegistrationEmptyInputFields();       	
@@ -180,13 +186,7 @@ public class LoginStepDefinition extends ChromeWebDriverUtility {
     		WebElement requiredField = webDriver.findElement(By.cssSelector(registrationRepository.getRegistrationInputFieldSelectors().get(i)));
     		requiredField.sendKeys(list.get(0).get(i));
     	}
-   	
-    	// Confirm that Passwords match
-    	String password = webDriver.findElement(By.cssSelector(registrationRepository.getRegistrationInputFieldSelectors().get(7))).getText();
-    	String confirm = webDriver.findElement(By.cssSelector(registrationRepository.getRegistrationInputFieldSelectors().get(8))).getText();
-    	
-    	Assert.assertTrue(password.equals(confirm));
-    	
+   	    	
     	// Select Country and County from the Drop-down Box
     	String country = "Poland";
     	Select selectCountry = new Select(registrationRepository.getCountry());
@@ -230,7 +230,12 @@ public class LoginStepDefinition extends ChromeWebDriverUtility {
     		}
     	}
     	
-    	// Handle the Check Box
+    	// Confirm that Passwords match
+    	String password = registrationRepository.getRegistrationPassword().getText();
+    	String confirm = registrationRepository.getRegistrationConfirm().getText();
+    	comparePasswords(password, confirm);
+    	
+    	// Handle the Check Box to agree for Terms and Conditions
     	WebElement termsAgreeCheckBox = registrationRepository.getAgreeCheckBox();
     	Assert.assertFalse(termsAgreeCheckBox.isSelected());
     	logger.info("Agree Terms Check Box is selected " + termsAgreeCheckBox.isSelected());
@@ -272,6 +277,23 @@ public class LoginStepDefinition extends ChromeWebDriverUtility {
     			logger.debug(i + " - " + requiredField + " is blank!");
     			Assert.assertTrue(requiredField.getText().isEmpty());
     		}
+    	}
+    }
+    
+    // Compare passwords
+    private void comparePasswords(String password, String confirm) {
+    	if (password.length() >= 4) {
+    		logger.info("Length of the Password is correct: " + password.length() + " characters!");
+    		
+        	if (password.equals(confirm)) {
+        		Assert.assertTrue(password.matches(confirm));
+        		logger.info("Password and Confimation Password mmatch!");
+        	} else {
+        		Assert.assertFalse(password.matches(confirm));
+        		logger.info("Password and Confimation Password do not mmatch!");
+        	}	
+    	} else {
+    		logger.warn("Password is too short: " + password.length() + " characters!");
     	}
     }
 }
