@@ -1,7 +1,7 @@
 Feature: Login Testing Application
 
 # Usage of Parameterisation
-@SeleniumTest
+#@SeleniumTest
 Scenario Outline: Successfull User Login using Parameterisation
 Given User is on the Home Page
 When User logs in with a username <username> and password <password>
@@ -27,7 +27,7 @@ When User logs in with credentials retrieved from DB
 Then User accesses their profile page "true"
 
 # User Login Failure
-@SeleniumTest
+#@SeleniumTest
 Scenario Outline: User Login Failure using Parameterisation
 Given User is on the Home Page
 When User logs in with a username <username> and password <password>

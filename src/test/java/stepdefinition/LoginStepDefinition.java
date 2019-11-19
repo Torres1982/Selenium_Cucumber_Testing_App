@@ -35,6 +35,7 @@ public class LoginStepDefinition extends ChromeWebDriverUtility {
 	HomeRepository homeRepository;
 	LoginRepository loginRepository;
 	AccountRepository accountRepository;
+	RegistrationRepository registrationRepository;
 	
     @Given("^User is on the Home Page$")
     public void user_is_on_the_home_page() throws Throwable {
@@ -124,6 +125,29 @@ public class LoginStepDefinition extends ChromeWebDriverUtility {
     	} else if (access.equals("false")) {
     		Assert.assertTrue(loginRepository.getWarningAlertElement().getText().contains("Warning"));
     		logger.info("User Provided Wrong Credentials!");
+    	} else if (access.equals("registration_false_empty_fields")) {
+    		List<WebElement> warningElements = webDriver.findElements(By.className("text-danger"));
+    		
+    		// Check for Red Warning Messages
+    		for (int i = 0; i < warningElements.size(); i++) {
+    			logger.warn(warningElements.get(i).getText());
+    			
+    			if (warningElements.get(i).isDisplayed()) {
+    				Assert.assertFalse(warningElements.get(i).getText().length() == 0);
+    			}
+    		}
+    		
+    		// Check for empty Input Fields
+        	for (int i = 0; i < registrationRepository.getRegistrationInputFieldSelectors().size(); i++) {
+        		WebElement requiredField = webDriver.findElement(By.cssSelector(registrationRepository.getRegistrationInputFieldSelectors().get(i)));
+        		
+        		if ((requiredField.getText()).equals("")) {
+        			logger.debug(i + " - " + requiredField + " is blank!");
+        			Assert.assertTrue(requiredField.getText().isEmpty());
+        		}
+        	}
+        	
+    		logger.info("You need to fill all the required input fields!");
     	}
     }
     
@@ -145,7 +169,7 @@ public class LoginStepDefinition extends ChromeWebDriverUtility {
     // User Registration
     @When("^User register with following details$")
     public void user_register_with_following_details(DataTable dataTable) throws Throwable {
-    	RegistrationRepository registrationRepository = new RegistrationRepository(webDriver);
+    	registrationRepository = new RegistrationRepository(webDriver);
     	List<List<String>> list = dataTable.raw();
     	
     	logger.info("User tries to Register with the following details:");					
@@ -171,9 +195,10 @@ public class LoginStepDefinition extends ChromeWebDriverUtility {
     	logger.info("Registration Page has been loaded!");
     	
     	for (int i = 0; i < registrationRepository.getRegistrationInputFieldSelectors().size(); i++) {
-    		webDriver.findElement(By.cssSelector(registrationRepository.getRegistrationInputFieldSelectors().get(i))).sendKeys(list.get(0).get(i));
+    		WebElement requiredField = webDriver.findElement(By.cssSelector(registrationRepository.getRegistrationInputFieldSelectors().get(i)));
+    		requiredField.sendKeys(list.get(0).get(i));
     	}
-    	
+   	
     	// Confirm that Passwords match
     	String password = webDriver.findElement(By.cssSelector(registrationRepository.getRegistrationInputFieldSelectors().get(7))).getText();
     	String confirm = webDriver.findElement(By.cssSelector(registrationRepository.getRegistrationInputFieldSelectors().get(8))).getText();
@@ -237,7 +262,7 @@ public class LoginStepDefinition extends ChromeWebDriverUtility {
     	logger.info("Number of Checkboxes: " + registrationRepository.getCheckBoxes().size());
     	
     	// Submit and Register
-    	//registrationRepository.getRegistrationButton().click();
+    	registrationRepository.getRegistrationButton().click();
     	logger.debug("Registration Submit Button has been clicked!");
     }
 }
