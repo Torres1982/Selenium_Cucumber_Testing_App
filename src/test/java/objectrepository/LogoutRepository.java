@@ -8,7 +8,7 @@ import org.openqa.selenium.support.PageFactory;
 public class LogoutRepository {
 	WebDriver webDriver;
 	@FindBy(css="#content h1")
-	WebElement logoutHeaderText;
+	private WebElement logoutHeaderText;
 	
 	public LogoutRepository(WebDriver webDriver) {
 		this.webDriver = webDriver;

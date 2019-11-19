@@ -114,11 +114,17 @@ public class LoginStepDefinition extends ChromeWebDriverUtility {
     	logger.info("The Login Button has been clicked!");
     }
 
-    @Then("^User accesses their profile page$")
-    public void user_accesses_their_profile_page() throws Throwable {
+    @Then("^User accesses their profile page \"([^\"]*)\"$")
+    public void user_accesses_their_profile_page(String access) throws Throwable {
     	accountRepository = new AccountRepository(webDriver);
-    	Assert.assertTrue(accountRepository.getLogoutButtonElement().getText().contains("Logout"));
-    	logger.info("User Accessed their Account!");
+    	
+    	if (access.equals("true")) {
+	    	Assert.assertTrue(accountRepository.getLogoutButtonElement().getText().contains("Logout"));
+	    	logger.info("User Accessed their Account!");
+    	} else if (access.equals("false")) {
+    		Assert.assertTrue(loginRepository.getWarningAlertElement().getText().contains("Warning"));
+    		logger.info("User Provided Wrong Credentials!");
+    	}
     }
     
     // User Logout

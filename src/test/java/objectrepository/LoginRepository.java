@@ -9,11 +9,13 @@ import org.openqa.selenium.support.PageFactory;
 public class LoginRepository {
 	WebDriver webDriver;
 	@FindBy(id="input-email")
-	WebElement email;
+	private WebElement email;
 	@FindBy(id="input-password")
-	WebElement password;
+	private WebElement password;
 	@FindBy(css="input[value='Login']")
-	WebElement loginButton;
+	private WebElement loginButton;
+	@FindBy(xpath="//div[@class='alert alert-danger warning']")
+	private WebElement warningAlert;
 	
 	public LoginRepository(WebDriver webDriver) {
 		this.webDriver = webDriver;
@@ -23,4 +25,5 @@ public class LoginRepository {
 	public WebElement getEmailInputElement() { return email; }
 	public WebElement getPasswordInputElement() { return password; }
 	public WebElement getLoginButtonElement() { return loginButton; }
+	public WebElement getWarningAlertElement() { return warningAlert; }
 }

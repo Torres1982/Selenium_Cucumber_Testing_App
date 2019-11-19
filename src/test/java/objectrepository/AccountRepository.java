@@ -8,7 +8,7 @@ import org.openqa.selenium.support.PageFactory;
 public class AccountRepository {
 	WebDriver webDriver;
 	@FindBy(xpath="//span[contains(text(), 'Logout')]")
-	WebElement logoutButton;
+	private WebElement logoutButton;
 	
 	public AccountRepository(WebDriver webDriver) {
 		this.webDriver = webDriver;
