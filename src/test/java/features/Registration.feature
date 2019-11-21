@@ -1,7 +1,7 @@
 Feature: Registration Testing Application
 
 # Usage of Data Table for multiple parameters
-@SeleniumTest
+#@SeleniumTest
 Scenario: Successful User Registration
 Given User is on the Home Page
 When User register with following details
@@ -19,7 +19,7 @@ When User register with following details
 
 Then User accesses their profile page "false_registration_empty_fields"
 
-#@SeleniumTest
+@SeleniumTest
 Scenario: User Registration Failure - Password Failure
 Given User is on the Home Page
 When User register with following details

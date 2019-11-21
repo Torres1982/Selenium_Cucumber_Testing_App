@@ -165,45 +165,25 @@ public class LoginStepDefinition extends ChromeWebDriverUtility {
     public void user_register_with_following_details(DataTable dataTable) throws Throwable {
     	registrationRepository = new RegistrationRepository(webDriver);
     	List<List<String>> list = dataTable.raw();
-    	
-    	// Display info retrieved from the Data Table from the Registration feature file
-    	displayRegistrationListInfo(list);
-    	
-    	// Navigate to Registration page
-    	homeRepository.getRegistrationLinkElement().click();
-    	logger.debug("Registration Link has been clicked!");
-    	
-    	// Confirm the Registration page is loaded
-    	Assert.assertTrue(registrationRepository.getRegistrationHeaderText().getText().contains("Register"));
-    	logger.info("Registration Page has been loaded!");
-    	
+  
+    	displayRegistrationListInfo(list);   	
+    	navigateToRegistrationPage();    	
     	fillRegistrationFormWithDataTableInfo(list);   	   
     	selectCountryFromDropDownBox();
     	
     	// EXPLICIT WAIT applied - targets only the specific Element (second Drop-Down List)
     	// Wait before the Region dynamic Drop-Down List is loaded and populated with Strings
     	WebDriverWait wait = new WebDriverWait(webDriver, 2);
-    	wait.until(ExpectedConditions.visibilityOfElementLocated(registrationRepository.getSelectedRegionOption()));    	
+    	wait.until(ExpectedConditions.visibilityOfElementLocated(registrationRepository.getSelectedRegionOption()));
+    	
     	selectRegionFromDropDownBox();
-    	    	
-    	// Handle Radio Buttons
-    	List<WebElement> radioButons = registrationRepository.getRadioButtons();
-    	handleRegistrationPageRadioButtons(radioButons);
-    	
-    	// Confirm that Passwords match
-    	String password = registrationRepository.getRegistrationPassword().getAttribute("value");
-    	String confirm = registrationRepository.getRegistrationConfirm().getAttribute("value");
-    	comparePasswords(password, confirm);
-    	
+    	handleRegistrationPageRadioButtons();    	
+    	comparePasswords(registrationRepository.getRegistrationPassword().getAttribute("value"), registrationRepository.getRegistrationConfirm().getAttribute("value"));    	
     	handleRegistrationPageAgreeTermsCheckBox();
-    	    	
-    	// Find the number of Check Boxes and Radio Buttons on the site
-    	logger.info("Number of Radio Buttons: " + radioButons.size());
-    	logger.info("Number of Checkboxes: " + registrationRepository.getCheckBoxes().size());
     	
     	// Submit and Register
-    	//registrationRepository.getRegistrationButton().click();
-    	//logger.debug("Registration Submit Button has been clicked!");
+    	registrationRepository.getRegistrationButton().click();
+    	logger.debug("Registration Submit Button has been clicked!");
     }
     
     // **************************************************************************************************
@@ -225,6 +205,16 @@ public class LoginStepDefinition extends ChromeWebDriverUtility {
 						"\nPassword: " + list.get(i).get(7) +
 						"\nConfirmed: " + list.get(i).get(8));
     	}
+    }
+    
+    // Navigate to Registration Page
+    private void navigateToRegistrationPage() {
+    	homeRepository.getRegistrationLinkElement().click();
+    	logger.debug("Registration Link has been clicked!");
+    	
+    	// Confirm the Registration page is loaded
+    	Assert.assertTrue(registrationRepository.getRegistrationHeaderText().getText().contains("Register"));
+    	logger.info("Registration Page has been loaded!");
     }
     
     // Fill in the Registration Form
@@ -303,8 +293,10 @@ public class LoginStepDefinition extends ChromeWebDriverUtility {
     	//selectState.selectByIndex(11);
     }
     
-    // Handles Radio Buttons
-    private void handleRegistrationPageRadioButtons(List<WebElement> radioButtonsList) {
+    // Handle Radio Buttons
+    private void handleRegistrationPageRadioButtons() {
+    	List<WebElement> radioButtonsList = registrationRepository.getRadioButtons();
+    	
     	// check if Radio Buttons exists on the page
     	if (radioButtonsList.size() == 2) {
     		int counter = 1;
@@ -325,9 +317,10 @@ public class LoginStepDefinition extends ChromeWebDriverUtility {
     			counter--;
     		}
     	}
+    	logger.info("Number of Radio Buttons: " + radioButtonsList.size());
     }
     
-    // Handles the Agree Terms & Conditions Check Box
+    // Handle the Agree Terms & Conditions Check Box
     private void handleRegistrationPageAgreeTermsCheckBox() {
     	// Handle the Check Box to agree for Terms and Conditions
     	WebElement termsAgreeCheckBox = registrationRepository.getAgreeCheckBox();
@@ -337,5 +330,6 @@ public class LoginStepDefinition extends ChromeWebDriverUtility {
     	logger.debug("Agree Terms Check Box has been clicked!");
     	Assert.assertTrue(termsAgreeCheckBox.isSelected());
     	logger.info("Agree Terms Check Box is selected " + termsAgreeCheckBox.isSelected());
+    	logger.info("Number of Checkboxes: " + registrationRepository.getCheckBoxes().size());
     }
 }

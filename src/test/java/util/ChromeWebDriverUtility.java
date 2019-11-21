@@ -11,8 +11,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
-import stepdefinition.LoginStepDefinition;
-
 public class ChromeWebDriverUtility {
 	private static final Logger logger = LogManager.getLogger(ChromeWebDriverUtility.class.getName());
 	public static WebDriver webDriver;
