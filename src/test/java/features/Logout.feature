@@ -4,6 +4,6 @@ Feature: Logout Testing Application
 Scenario: User Logs out of the Profile page
 Given User is on the Home Page
 When User logs in with credentials retrieved from the Excel file
-Then User accesses their profile page
+Then User accesses their profile page "true"
 And User logs out
 Then the Login Page should display

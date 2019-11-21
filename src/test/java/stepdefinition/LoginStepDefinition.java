@@ -128,14 +128,20 @@ public class LoginStepDefinition extends ChromeWebDriverUtility {
     	
     	if (access.equals("false")) {
     		Assert.assertTrue(loginRepository.getWarningAlertElement().getText().contains("Warning"));
-    		logger.info("User Provided Wrong Credentials!");
+    		logger.warn("User Provided Wrong Credentials!");
     	}
     	
     	if (access.equals("false_registration_empty_fields")) {
     		List<WebElement> warningElements = webDriver.findElements(By.className("text-danger"));
     		checkRegistrationWarningMessages(warningElements);
     		checkRegistrationEmptyInputFields();       	
-    		logger.info("You need to fill all the required input fields!");
+    		logger.warn("You need to fill all the required input fields!");
+    	}
+    	
+    	if (access.equals("false_registration_password_failure")) {
+    		checkPasswordIfEmpty(registrationRepository.getRegistrationPassword().getAttribute("value"), "Password");
+    		checkPasswordIfEmpty(registrationRepository.getRegistrationConfirm().getAttribute("value"), "Confirmation Password");
+    		logger.warn("Password Failure has occurred!");
     	}
     }
     
@@ -160,19 +166,8 @@ public class LoginStepDefinition extends ChromeWebDriverUtility {
     	registrationRepository = new RegistrationRepository(webDriver);
     	List<List<String>> list = dataTable.raw();
     	
-    	logger.info("User tries to Register with the following details:");					
-    	
-    	for (int i = 0; i < list.size(); i++) {
-			logger.info("Name: " + list.get(i).get(0) +
-						"\nLast Name: " + list.get(i).get(1) +
-						"\nEmail: " + list.get(i).get(2) +
-						"\nTelephone: " + list.get(i).get(3) +
-						"\nAddress: " + list.get(i).get(4) +
-						"\nPhone 2: " + list.get(i).get(5) +
-						"\nCity: " + list.get(i).get(6) +
-						"\nPassword: " + list.get(i).get(7) +
-						"\nConfirmed: " + list.get(i).get(8));
-    	}
+    	// Display info retrieved from the Data Table from the Registration feature file
+    	displayRegistrationListInfo(list);
     	
     	// Navigate to Registration page
     	homeRepository.getRegistrationLinkElement().click();
@@ -182,80 +177,63 @@ public class LoginStepDefinition extends ChromeWebDriverUtility {
     	Assert.assertTrue(registrationRepository.getRegistrationHeaderText().getText().contains("Register"));
     	logger.info("Registration Page has been loaded!");
     	
-    	for (int i = 0; i < registrationRepository.getRegistrationInputFieldSelectors().size(); i++) {
-    		WebElement requiredField = webDriver.findElement(By.cssSelector(registrationRepository.getRegistrationInputFieldSelectors().get(i)));
-    		requiredField.sendKeys(list.get(0).get(i));
-    	}
-   	    	
-    	// Select Country and County from the Drop-down Box
-    	String country = "Poland";
-    	Select selectCountry = new Select(registrationRepository.getCountry());
-    	selectCountry.selectByVisibleText(country);
-    	Assert.assertEquals(selectCountry.getFirstSelectedOption().getText(), country);
-    	logger.debug("Selected country option is: " + country);
+    	fillRegistrationFormWithDataTableInfo(list);   	   
+    	selectCountryFromDropDownBox();
     	
     	// EXPLICIT WAIT applied - targets only the specific Element (second Drop-Down List)
     	// Wait before the Region dynamic Drop-Down List is loaded and populated with Strings
     	WebDriverWait wait = new WebDriverWait(webDriver, 2);
-    	wait.until(ExpectedConditions.visibilityOfElementLocated(registrationRepository.getSelectedRegionOption()));
-    	
-    	String region = "Pomorskie";
-    	Select selectState = new Select(registrationRepository.getZone());   	
-    	selectState.selectByVisibleText(region);
-    	Assert.assertEquals(selectState.getOptions().get(11).getText(), region);
-    	logger.debug("Selected region option is: " + region);
-    	//selectState.selectByIndex(11);
+    	wait.until(ExpectedConditions.visibilityOfElementLocated(registrationRepository.getSelectedRegionOption()));    	
+    	selectRegionFromDropDownBox();
     	    	
     	// Handle Radio Buttons
     	List<WebElement> radioButons = registrationRepository.getRadioButtons();
-    	
-    	// check if Radio Buttons exists on the page
-    	if (radioButons.size() == 2) {
-    		int counter = 1;
-    		
-    		for (int i = 0; i < radioButons.size(); i++) {
-    			Assert.assertTrue(radioButons.get(i).isDisplayed());
-    			logger.debug("Radio Button " + i + " is displayed " + radioButons.get(i).isDisplayed());
-    			
-    			// Verify that both Radio Buttons are not selected
-    			if (radioButons.get(i).isSelected()) {
-        			Assert.assertFalse(radioButons.get(counter).isSelected());
-        			logger.info("Radio Button " + i + " is selected " + radioButons.get(counter).isSelected());
-        			radioButons.get(counter).click();
-        			logger.debug("Radio Button " + i + " has been clicked!");
-        			Assert.assertTrue(radioButons.get(counter).isSelected());
-        			logger.info("Radio Button " + i + " is selected " + radioButons.get(counter).isSelected());
-    			}
-    			counter--;
-    		}
-    	}
+    	handleRegistrationPageRadioButtons(radioButons);
     	
     	// Confirm that Passwords match
-    	String password = registrationRepository.getRegistrationPassword().getText();
-    	String confirm = registrationRepository.getRegistrationConfirm().getText();
+    	String password = registrationRepository.getRegistrationPassword().getAttribute("value");
+    	String confirm = registrationRepository.getRegistrationConfirm().getAttribute("value");
     	comparePasswords(password, confirm);
     	
-    	// Handle the Check Box to agree for Terms and Conditions
-    	WebElement termsAgreeCheckBox = registrationRepository.getAgreeCheckBox();
-    	Assert.assertFalse(termsAgreeCheckBox.isSelected());
-    	logger.info("Agree Terms Check Box is selected " + termsAgreeCheckBox.isSelected());
-    	termsAgreeCheckBox.click();
-    	logger.debug("Agree Terms Check Box has been clicked!");
-    	Assert.assertTrue(termsAgreeCheckBox.isSelected());
-    	logger.info("Agree Terms Check Box is selected " + termsAgreeCheckBox.isSelected());
-    	
+    	handleRegistrationPageAgreeTermsCheckBox();
+    	    	
     	// Find the number of Check Boxes and Radio Buttons on the site
     	logger.info("Number of Radio Buttons: " + radioButons.size());
     	logger.info("Number of Checkboxes: " + registrationRepository.getCheckBoxes().size());
     	
     	// Submit and Register
-    	registrationRepository.getRegistrationButton().click();
-    	logger.debug("Registration Submit Button has been clicked!");
+    	//registrationRepository.getRegistrationButton().click();
+    	//logger.debug("Registration Submit Button has been clicked!");
     }
     
     // **************************************************************************************************
     //										HELPER METHODS
     // **************************************************************************************************
+    
+    // Get all information from the DataTable for Registration input Fields
+    private void displayRegistrationListInfo(List<List<String>> list) {
+    	logger.info("User tries to Register with the following details:");					
+    	
+    	for (int i = 0; i < list.size(); i++) {
+			logger.info("\nName: " + list.get(i).get(0) +
+						"\nLast Name: " + list.get(i).get(1) +
+						"\nEmail: " + list.get(i).get(2) +
+						"\nTelephone: " + list.get(i).get(3) +
+						"\nAddress: " + list.get(i).get(4) +
+						"\nPhone 2: " + list.get(i).get(5) +
+						"\nCity: " + list.get(i).get(6) +
+						"\nPassword: " + list.get(i).get(7) +
+						"\nConfirmed: " + list.get(i).get(8));
+    	}
+    }
+    
+    // Fill in the Registration Form
+    private void fillRegistrationFormWithDataTableInfo(List<List<String>> list) {
+    	for (int i = 0; i < registrationRepository.getRegistrationInputFieldSelectors().size(); i++) {
+    		WebElement requiredField = webDriver.findElement(By.cssSelector(registrationRepository.getRegistrationInputFieldSelectors().get(i)));
+    		requiredField.sendKeys(list.get(0).get(i));
+    	}
+    }
     
     // Check for Registration Warning Messages
     private void checkRegistrationWarningMessages(List<WebElement> list) {
@@ -283,17 +261,81 @@ public class LoginStepDefinition extends ChromeWebDriverUtility {
     // Compare passwords
     private void comparePasswords(String password, String confirm) {
     	if (password.length() >= 4) {
-    		logger.info("Length of the Password is correct: " + password.length() + " characters!");
+    		logger.info("Length of the Password *** " + password + " *** is correct: " + password.length() + " characters!");
     		
         	if (password.equals(confirm)) {
         		Assert.assertTrue(password.matches(confirm));
         		logger.info("Password and Confimation Password mmatch!");
         	} else {
         		Assert.assertFalse(password.matches(confirm));
-        		logger.info("Password and Confimation Password do not mmatch!");
+        		logger.warn("Password and Confimation Password do not mmatch!");
         	}	
     	} else {
-    		logger.warn("Password is too short: " + password.length() + " characters!");
+    		Assert.assertFalse(password.length() >= 4);
+    		logger.warn("Password *** " + password + " *** is too short: " + password.length() + " characters!");
     	}
+    }
+    
+    // Check if Password or/and Confirm is/are empty
+    private void checkPasswordIfEmpty(String password, String passType) {
+    	if (password.length() == 0) {
+    		Assert.assertTrue(password.isEmpty());
+    		logger.warn(passType + " is not provided!");
+    	}
+    }
+    
+    // Select Country from the Selection Options
+    private void selectCountryFromDropDownBox() {
+    	String country = "Poland";
+    	Select selectCountry = new Select(registrationRepository.getCountry());
+    	selectCountry.selectByVisibleText(country);
+    	Assert.assertEquals(selectCountry.getFirstSelectedOption().getText(), country);
+    	logger.debug("Selected country option is: " + country);
+    }
+    
+    // Select Region from the Selection Options
+    private void selectRegionFromDropDownBox() {
+    	String region = "Pomorskie";
+    	Select selectState = new Select(registrationRepository.getZone());   	
+    	selectState.selectByVisibleText(region);
+    	Assert.assertEquals(selectState.getOptions().get(11).getText(), region);
+    	logger.debug("Selected region option is: " + region);
+    	//selectState.selectByIndex(11);
+    }
+    
+    // Handles Radio Buttons
+    private void handleRegistrationPageRadioButtons(List<WebElement> radioButtonsList) {
+    	// check if Radio Buttons exists on the page
+    	if (radioButtonsList.size() == 2) {
+    		int counter = 1;
+    		
+    		for (int i = 0; i < radioButtonsList.size(); i++) {
+    			Assert.assertTrue(radioButtonsList.get(i).isDisplayed());
+    			logger.debug("Radio Button " + i + " is displayed " + radioButtonsList.get(i).isDisplayed());
+    			
+    			// Verify that both Radio Buttons are not selected
+    			if (radioButtonsList.get(i).isSelected()) {
+        			Assert.assertFalse(radioButtonsList.get(counter).isSelected());
+        			logger.info("Radio Button " + i + " is selected " + radioButtonsList.get(counter).isSelected());
+        			radioButtonsList.get(counter).click();
+        			logger.debug("Radio Button " + i + " has been clicked!");
+        			Assert.assertTrue(radioButtonsList.get(counter).isSelected());
+        			logger.info("Radio Button " + i + " is selected " + radioButtonsList.get(counter).isSelected());
+    			}
+    			counter--;
+    		}
+    	}
+    }
+    
+    // Handles the Agree Terms & Conditions Check Box
+    private void handleRegistrationPageAgreeTermsCheckBox() {
+    	// Handle the Check Box to agree for Terms and Conditions
+    	WebElement termsAgreeCheckBox = registrationRepository.getAgreeCheckBox();
+    	Assert.assertFalse(termsAgreeCheckBox.isSelected());
+    	logger.info("Agree Terms Check Box is selected " + termsAgreeCheckBox.isSelected());
+    	termsAgreeCheckBox.click();
+    	logger.debug("Agree Terms Check Box has been clicked!");
+    	Assert.assertTrue(termsAgreeCheckBox.isSelected());
+    	logger.info("Agree Terms Check Box is selected " + termsAgreeCheckBox.isSelected());
     }
 }
