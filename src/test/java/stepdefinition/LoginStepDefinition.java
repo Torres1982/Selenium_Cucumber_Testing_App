@@ -258,7 +258,7 @@ public class LoginStepDefinition extends ChromeWebDriverUtility {
         		logger.info("Password and Confimation Password mmatch!");
         	} else {
         		Assert.assertFalse(password.matches(confirm));
-        		logger.warn("Password and Confimation Password do not mmatch!");
+        		logger.warn("Password and Confirmation Password do not match!");
         	}	
     	} else {
     		Assert.assertFalse(password.length() >= 4);
