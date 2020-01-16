@@ -2,6 +2,8 @@ package stepdefinition;
 
 import java.sql.SQLException;
 
+import org.junit.Assert;
+
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
 import util.ChromeWebDriverUtility;

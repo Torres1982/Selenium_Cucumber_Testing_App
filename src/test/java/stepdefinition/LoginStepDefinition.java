@@ -43,6 +43,8 @@ public class LoginStepDefinition extends ChromeWebDriverUtility {
     public void user_is_on_the_home_page() throws Throwable {
     	webDriver = ChromeWebDriverUtility.getWebDriver();
     	homeRepository = new HomeRepository(webDriver);
+    	
+    	testPageTitle("FAI Shop | Ireland | Football | FAI", webDriver.getTitle());
     }
     
     // Login with usage of Parameterisation
@@ -148,6 +150,8 @@ public class LoginStepDefinition extends ChromeWebDriverUtility {
     // User Logout
     @And("^User logs out$")
     public void user_logs_out() throws Throwable {
+    	testPageTitle("My Account", webDriver.getTitle());
+    	
     	accountRepository.getLogoutButtonElement().click();
     	logger.info("User has been successfully Logged Out!");
     }
@@ -162,7 +166,7 @@ public class LoginStepDefinition extends ChromeWebDriverUtility {
     
     // User Registration
     @When("^User register with following details$")
-    public void user_register_with_following_details(DataTable dataTable) throws Throwable {
+    public void user_register_with_following_details(DataTable dataTable) throws Throwable {    	
     	registrationRepository = new RegistrationRepository(webDriver);
     	List<List<String>> list = dataTable.raw();
   
@@ -332,4 +336,13 @@ public class LoginStepDefinition extends ChromeWebDriverUtility {
     	logger.info("Agree Terms Check Box is selected " + termsAgreeCheckBox.isSelected());
     	logger.info("Number of Checkboxes: " + registrationRepository.getCheckBoxes().size());
     }
+    
+	// Check the Page Title
+	private void testPageTitle(String title, String pageTitle) {
+		//String pageTitle = webDriver.getTitle();
+		Assert.assertEquals(pageTitle, title);
+		
+		String titlePage = (title.equals(pageTitle)) ? "Page Title is Correct: " : "Page Title is Wrong: ";
+		logger.info(titlePage + pageTitle);
+	}
 }
